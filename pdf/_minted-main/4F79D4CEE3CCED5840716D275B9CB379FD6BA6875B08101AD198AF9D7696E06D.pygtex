@@ -1,0 +1,139 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}iostream\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}map\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}string\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}vector\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}queue\PYGZgt{}}
+
+\PYG{k}{class} \PYG{n+nc}{AhoCorasick} \PYG{p}{\PYGZob{}}
+  \PYG{k}{struct} \PYG{n}{Node} \PYG{p}{\PYGZob{}}
+    \PYG{n}{std}\PYG{o}{::}\PYG{n}{map}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{char}\PYG{p}{,}\PYG{n}{Node}\PYG{o}{\PYGZgt{}} \PYG{n}{child}\PYG{p}{;} \PYG{c+c1}{//遷移辺(!)}
+    \PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{size\PYGZus{}t}\PYG{o}{\PYGZgt{}} \PYG{n}{pattern}\PYG{p}{;} \PYG{c+c1}{//マッチするパターン(のindex)}
+    \PYG{n}{Node}\PYG{o}{*} \PYG{n}{failure}\PYG{p}{;} \PYG{c+c1}{//遷移失敗時の遷移先ノード}
+    \PYG{n}{Node}\PYG{p}{()}\PYG{o}{:}\PYG{n}{failure}\PYG{p}{(}\PYG{n+nb}{NULL}\PYG{p}{)\PYGZob{}\PYGZcb{}}
+  \PYG{p}{\PYGZcb{};}
+  \PYG{n}{Node} \PYG{n}{root}\PYG{p}{;} \PYG{c+c1}{//根}
+
+  \PYG{c+c1}{//PMAのクリア}
+  \PYG{k+kt}{void} \PYG{n+nf}{clear\PYGZus{}graph}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{root}\PYG{p}{.}\PYG{n}{child}\PYG{p}{.}\PYG{n}{clear}\PYG{p}{();}
+    \PYG{n}{root}\PYG{p}{.}\PYG{n}{pattern}\PYG{p}{.}\PYG{n}{clear}\PYG{p}{();}
+  \PYG{p}{\PYGZcb{}}
+
+  \PYG{c+c1}{//Trieを構築}
+  \PYG{k+kt}{void} \PYG{n+nf}{generate\PYGZus{}trie}\PYG{p}{(}\PYG{k}{const} \PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{std}\PYG{o}{::}\PYG{n}{string}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{patterns}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{size\PYGZus{}t} \PYG{n}{n} \PYG{o}{=} \PYG{n}{patterns}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}
+
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{size\PYGZus{}t} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;} \PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+      \PYG{n}{Node}\PYG{o}{*} \PYG{n}{t} \PYG{o}{=} \PYG{o}{\PYGZam{}}\PYG{n}{root}\PYG{p}{;}
+      \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{size\PYGZus{}t} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{patterns}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{length}\PYG{p}{();} \PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{t} \PYG{o}{=} \PYG{o}{\PYGZam{}}\PYG{p}{(}\PYG{n}{t}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{child}\PYG{p}{[}\PYG{n}{patterns}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]]);}
+      \PYG{p}{\PYGZcb{}}
+      \PYG{n}{t}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pattern}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{}}
+
+  \PYG{c+c1}{//failure辺を追加}
+  \PYG{k+kt}{void} \PYG{n+nf}{add\PYGZus{}failure\PYGZus{}edge}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{std}\PYG{o}{::}\PYG{n}{queue}\PYG{o}{\PYGZlt{}}\PYG{n}{Node}\PYG{o}{*\PYGZgt{}} \PYG{n}{que}\PYG{p}{;}
+    \PYG{n}{que}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{root}\PYG{p}{);}
+
+    \PYG{c+c1}{//幅優先探索で帰納的に失敗時の遷移辺を追加していく}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{que}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())\PYGZob{}}
+      \PYG{n}{Node}\PYG{o}{*} \PYG{n}{t} \PYG{o}{=} \PYG{n}{que}\PYG{p}{.}\PYG{n}{front}\PYG{p}{();} \PYG{n}{que}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+      \PYG{n}{std}\PYG{o}{::}\PYG{n}{map}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{char}\PYG{p}{,}\PYG{n}{Node}\PYG{o}{\PYGZgt{}::}\PYG{n}{iterator} \PYG{n}{itr} \PYG{o}{=} \PYG{n}{t}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{child}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{();}
+
+      \PYG{k}{for}\PYG{p}{(;} \PYG{n}{itr} \PYG{o}{!=} \PYG{n}{t}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{child}\PYG{p}{.}\PYG{n}{end}\PYG{p}{();} \PYG{o}{++}\PYG{n}{itr}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{que}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{p}{(}\PYG{n}{itr}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second}\PYG{p}{));}
+        \PYG{k+kt}{char} \PYG{n}{c} \PYG{o}{=} \PYG{n}{itr}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{first}\PYG{p}{;}
+        \PYG{n}{Node}\PYG{o}{*} \PYG{n}{node} \PYG{o}{=} \PYG{o}{\PYGZam{}}\PYG{p}{(}\PYG{n}{itr}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second}\PYG{p}{);} \PYG{c+c1}{// 文字cで遷移する頂点}
+
+        \PYG{n}{Node}\PYG{o}{*} \PYG{n}{anode} \PYG{o}{=} \PYG{n}{t}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{failure}\PYG{p}{;} \PYG{c+c1}{// 失敗したときの遷移先}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{anode} \PYG{o}{!=} \PYG{n+nb}{NULL} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{anode}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{child}\PYG{p}{.}\PYG{n}{count}\PYG{p}{(}\PYG{n}{c}\PYG{p}{)}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)} \PYG{n}{anode} \PYG{o}{=} \PYG{n}{anode}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{failure}\PYG{p}{;}
+
+        \PYG{c+c1}{//遷移失敗時に続けられる別の頂点へ遷移}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{anode} \PYG{o}{==} \PYG{n+nb}{NULL}\PYG{p}{)\PYGZob{}}
+          \PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{failure} \PYG{o}{=} \PYG{o}{\PYGZam{}}\PYG{n}{root}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{else}\PYG{p}{\PYGZob{}}
+          \PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{failure} \PYG{o}{=} \PYG{o}{\PYGZam{}}\PYG{p}{(}\PYG{n}{anode}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{child}\PYG{p}{[}\PYG{n}{c}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{c+c1}{//マッチするパターンを追加}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{size\PYGZus{}t} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{failure}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pattern}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();} \PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+          \PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pattern}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{failure}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pattern}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//メモリ食いすぎ回避のため切り詰めておく}
+        \PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{size\PYGZus{}t}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pattern}\PYG{p}{).}\PYG{n}{swap}\PYG{p}{(}\PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pattern}\PYG{p}{);}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{}}
+
+  \PYG{c+c1}{//Pattern Match Automatonを構築}
+  \PYG{k+kt}{void} \PYG{n+nf}{make\PYGZus{}PMA}\PYG{p}{(}\PYG{k}{const} \PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{std}\PYG{o}{::}\PYG{n}{string}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{patterns}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{clear\PYGZus{}graph}\PYG{p}{();}
+    \PYG{c+c1}{//trieを構築}
+    \PYG{n}{generate\PYGZus{}trie}\PYG{p}{(}\PYG{n}{patterns}\PYG{p}{);}
+    \PYG{c+c1}{//failure辺を追加}
+    \PYG{n}{add\PYGZus{}failure\PYGZus{}edge}\PYG{p}{();}
+  \PYG{p}{\PYGZcb{}}
+
+\PYG{k}{public}\PYG{o}{:}
+  \PYG{n}{AhoCorasick}\PYG{p}{(}\PYG{k}{const} \PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{std}\PYG{o}{::}\PYG{n}{string}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{patterns}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{make\PYGZus{}PMA}\PYG{p}{(}\PYG{n}{patterns}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+
+  \PYG{c+c1}{//文字列の探索}
+  \PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}} \PYG{n}{std}\PYG{o}{::}\PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{size\PYGZus{}t}\PYG{p}{,}\PYG{k+kt}{size\PYGZus{}t}\PYG{o}{\PYGZgt{}} \PYG{o}{\PYGZgt{}} \PYG{n}{find}\PYG{p}{(}\PYG{k}{const} \PYG{n}{std}\PYG{o}{::}\PYG{n}{string}\PYG{o}{\PYGZam{}} \PYG{n}{text}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{std}\PYG{o}{::}\PYG{n}{vector}\PYG{o}{\PYGZlt{}} \PYG{n}{std}\PYG{o}{::}\PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{size\PYGZus{}t}\PYG{p}{,}\PYG{k+kt}{size\PYGZus{}t}\PYG{o}{\PYGZgt{}} \PYG{o}{\PYGZgt{}} \PYG{n}{ret}\PYG{p}{;}
+    \PYG{n}{Node}\PYG{o}{*} \PYG{n}{node} \PYG{o}{=} \PYG{o}{\PYGZam{}}\PYG{n}{root}\PYG{p}{;}
+
+    \PYG{c+c1}{//PMAにtextを入力}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{size\PYGZus{}t} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{text}\PYG{p}{.}\PYG{n}{length}\PYG{p}{();} \PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+
+      \PYG{c+c1}{//遷移失敗するかどうか確認}
+      \PYG{k}{while}\PYG{p}{(}\PYG{n}{node} \PYG{o}{!=} \PYG{n+nb}{NULL} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{child}\PYG{p}{.}\PYG{n}{count}\PYG{p}{(}\PYG{n}{text}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)} \PYG{n}{node} \PYG{o}{=} \PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{failure}\PYG{p}{;}
+
+      \PYG{c+c1}{//次の頂点へ移動}
+      \PYG{k}{if}\PYG{p}{(}\PYG{n}{node} \PYG{o}{==} \PYG{n+nb}{NULL}\PYG{p}{)} \PYG{n}{node} \PYG{o}{=} \PYG{o}{\PYGZam{}}\PYG{n}{root}\PYG{p}{;}
+      \PYG{k}{else} \PYG{n}{node} \PYG{o}{=} \PYG{o}{\PYGZam{}}\PYG{p}{(}\PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{child}\PYG{p}{[}\PYG{n}{text}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]);}
+
+      \PYG{c+c1}{//もしパターンが見つかったら保存}
+      \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{size\PYGZus{}t} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pattern}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();} \PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{size\PYGZus{}t} \PYG{n}{e} \PYG{o}{=} \PYG{n}{i}\PYG{p}{;} \PYG{c+c1}{//見つかった位置(パターンの文字列の最後の部分)}
+        \PYG{k+kt}{size\PYGZus{}t} \PYG{n}{pi} \PYG{o}{=} \PYG{n}{node}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{pattern}\PYG{p}{[}\PYG{n}{j}\PYG{p}{];} \PYG{c+c1}{//見つかったパターンのindex}
+        \PYG{n}{ret}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{std}\PYG{o}{::}\PYG{n}{make\PYGZus{}pair}\PYG{p}{(}\PYG{n}{e}\PYG{p}{,}\PYG{n}{pi}\PYG{p}{));}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ret}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{int main()\PYGZob{}}
+
+\PYG{c+cm}{  //探したいパターン}
+\PYG{c+cm}{  std::vector\PYGZlt{}std::string\PYGZgt{} pat;}
+\PYG{c+cm}{  pat.push\PYGZus{}back(\PYGZdq{}ab\PYGZdq{});}
+\PYG{c+cm}{  pat.push\PYGZus{}back(\PYGZdq{}bcd\PYGZdq{});}
+
+\PYG{c+cm}{  AhoCorasick ac(pat);}
+
+\PYG{c+cm}{  //入力文}
+\PYG{c+cm}{  std::string text = \PYGZdq{}abcde\PYGZdq{};}
+
+\PYG{c+cm}{  //テキストの探索}
+\PYG{c+cm}{  std::vector\PYGZlt{} std::pair\PYGZlt{}size\PYGZus{}t,size\PYGZus{}t\PYGZgt{} \PYGZgt{} ret = ac.find(text);}
+
+\PYG{c+cm}{  //結果の出力}
+\PYG{c+cm}{  for(size\PYGZus{}t i=0; i\PYGZlt{}ret.size(); i++)\PYGZob{}}
+\PYG{c+cm}{    size\PYGZus{}t e = ret[i].first; //マッチパターンの文字列最後の位置}
+\PYG{c+cm}{    size\PYGZus{}t pi = ret[i].second; //マッチしたパターンのindex}
+\PYG{c+cm}{    size\PYGZus{}t s = e + 1 \PYGZhy{} pat[pi].length(); //マッチパターンの文字列最初の位置}
+
+\PYG{c+cm}{    std::cout \PYGZlt{}\PYGZlt{} \PYGZdq{}[\PYGZdq{} \PYGZlt{}\PYGZlt{} pat[pi] \PYGZlt{}\PYGZlt{} \PYGZdq{}] find at index \PYGZdq{} \PYGZlt{}\PYGZlt{} s \PYGZlt{}\PYGZlt{} std::endl;}
+\PYG{c+cm}{  \PYGZcb{}}
+
+\PYG{c+cm}{  return 0;}
+\PYG{c+cm}{\PYGZcb{}}
+\PYG{c+cm}{*/}
+\end{Verbatim}

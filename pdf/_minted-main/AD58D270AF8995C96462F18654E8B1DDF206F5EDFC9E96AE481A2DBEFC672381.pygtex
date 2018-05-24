@@ -1,0 +1,65 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{StarrySkyTree} \PYG{p}{\PYGZob{}}
+\PYG{k}{private}\PYG{o}{:}
+    \PYG{n}{ll} \PYG{n}{base}\PYG{p}{;}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{s}\PYG{p}{;}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{mn}\PYG{p}{;}
+    \PYG{k+kt}{void} \PYG{n+nf}{update\PYGZus{}mn}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{n}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{n} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{k}{return}\PYG{p}{;}
+        \PYG{n}{mn}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]} \PYG{o}{=} \PYG{n}{min}\PYG{p}{(}\PYG{n}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{n}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{),} \PYG{n}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{n}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{));}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n+nf}{add}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{r}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{n}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{L}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{R}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{val}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZlt{}=} \PYG{n}{L} \PYG{o}{||} \PYG{n}{R} \PYG{o}{\PYGZlt{}=} \PYG{n}{l}\PYG{p}{)} \PYG{k}{return}\PYG{p}{;}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{L} \PYG{o}{\PYGZlt{}=} \PYG{n}{l} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{r} \PYG{o}{\PYGZlt{}=} \PYG{n}{R}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{s}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{val}\PYG{p}{;}
+            \PYG{k}{return}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{ll} \PYG{n}{m} \PYG{o}{=} \PYG{p}{(}\PYG{n}{l} \PYG{o}{+} \PYG{n}{r}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mi}{2}\PYG{p}{;}
+        \PYG{n}{add}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,} \PYG{n}{m}\PYG{p}{,} \PYG{n}{n}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{L}\PYG{p}{,} \PYG{n}{R}\PYG{p}{,} \PYG{n}{val}\PYG{p}{);}
+        \PYG{n}{add}\PYG{p}{(}\PYG{n}{m}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{n}{n}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{L}\PYG{p}{,} \PYG{n}{R}\PYG{p}{,} \PYG{n}{val}\PYG{p}{);}
+        \PYG{n}{mn}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]} \PYG{o}{=} \PYG{n}{min}\PYG{p}{(}\PYG{n}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{n}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{),} \PYG{n}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{n}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{));}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{ll} \PYG{n+nf}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{n}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{min}\PYG{p}{(}\PYG{n}{linf}\PYG{p}{,} \PYG{n}{mn}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]} \PYG{o}{+} \PYG{n}{s}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{ll} \PYG{n+nf}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{r}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{n}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{L}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{R}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZlt{}=} \PYG{n}{L} \PYG{o}{||} \PYG{n}{R} \PYG{o}{\PYGZlt{}=} \PYG{n}{l}\PYG{p}{)} \PYG{k}{return} \PYG{n}{linf}\PYG{p}{;}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{L} \PYG{o}{\PYGZlt{}=} \PYG{n}{l} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{r} \PYG{o}{\PYGZlt{}=} \PYG{n}{R}\PYG{p}{)} \PYG{k}{return} \PYG{n}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+        \PYG{n}{ll} \PYG{n}{m} \PYG{o}{=} \PYG{p}{(}\PYG{n}{l} \PYG{o}{+} \PYG{n}{r}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mi}{2}\PYG{p}{;}
+        \PYG{n}{ll} \PYG{n}{res} \PYG{o}{=} \PYG{n}{min}\PYG{p}{(}\PYG{n}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,} \PYG{n}{m}\PYG{p}{,} \PYG{n}{n}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{L}\PYG{p}{,} \PYG{n}{R}\PYG{p}{),} \PYG{n}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{m}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{n}{n}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{L}\PYG{p}{,} \PYG{n}{R}\PYG{p}{));}
+        \PYG{k}{return} \PYG{n}{min}\PYG{p}{(}\PYG{n}{linf}\PYG{p}{,} \PYG{n}{res}\PYG{o}{+}\PYG{n}{s}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n+nf}{get\PYGZus{}min\PYGZus{}pos}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{r}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{n}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{L}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{R}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{sum}\PYG{p}{,} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{res}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZlt{}=} \PYG{n}{L} \PYG{o}{||} \PYG{n}{R} \PYG{o}{\PYGZlt{}=} \PYG{n}{l}\PYG{p}{)} \PYG{k}{return}\PYG{p}{;}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{mn}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]} \PYG{o}{+} \PYG{n}{s}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]} \PYG{o}{+} \PYG{n}{sum} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{k}{return}\PYG{p}{;}
+        \PYG{n}{assert}\PYG{p}{(}\PYG{n}{l} \PYG{o}{\PYGZlt{}} \PYG{n}{r}\PYG{p}{);}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZhy{}} \PYG{n}{l} \PYG{o}{==} \PYG{l+m+mi}{1}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{res}\PYG{p}{.}\PYG{n}{pb}\PYG{p}{(}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{base}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{n}{ll} \PYG{n}{m} \PYG{o}{=} \PYG{p}{(}\PYG{n}{l} \PYG{o}{+} \PYG{n}{r}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mi}{2}\PYG{p}{;}
+            \PYG{n}{get\PYGZus{}min\PYGZus{}pos}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,} \PYG{n}{m}\PYG{p}{,} \PYG{n}{n}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{L}\PYG{p}{,} \PYG{n}{R}\PYG{p}{,} \PYG{n}{sum}\PYG{o}{+}\PYG{n}{s}\PYG{p}{[}\PYG{n}{n}\PYG{p}{],} \PYG{n}{res}\PYG{p}{);}
+            \PYG{n}{get\PYGZus{}min\PYGZus{}pos}\PYG{p}{(}\PYG{n}{m}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{n}{n}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{L}\PYG{p}{,} \PYG{n}{R}\PYG{p}{,} \PYG{n}{sum}\PYG{o}{+}\PYG{n}{s}\PYG{p}{[}\PYG{n}{n}\PYG{p}{],} \PYG{n}{res}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{k}{public}\PYG{o}{:}
+    \PYG{n}{StarrySkyTree}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{n}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{for} \PYG{p}{(}\PYG{n}{base} \PYG{o}{=} \PYG{l+m+mi}{1}\PYG{p}{;} \PYG{n}{base} \PYG{o}{\PYGZlt{}} \PYG{n}{n}\PYG{p}{;} \PYG{n}{base} \PYG{o}{\PYGZlt{}\PYGZlt{}=} \PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{s} \PYG{o}{=} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{base}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{);}
+        \PYG{n}{mn} \PYG{o}{=} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{base}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n}{add}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{r}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{val}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{add}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{base}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{n}{val}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{ll} \PYG{n}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{assert}\PYG{p}{(}\PYG{l+m+mi}{0} \PYG{o}{\PYGZlt{}=} \PYG{n}{l} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{l} \PYG{o}{\PYGZlt{}} \PYG{n}{r} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{r} \PYG{o}{\PYGZlt{}=} \PYG{n}{base}\PYG{p}{);}
+        \PYG{k}{return} \PYG{n+nf}{get\PYGZus{}min}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{base}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{get\PYGZus{}min\PYGZus{}pos}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{ll} \PYG{n}{min\PYGZus{}value} \PYG{o}{=} \PYG{n}{get\PYGZus{}min}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{);}
+        \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{res}\PYG{p}{;}
+        \PYG{n}{get\PYGZus{}min\PYGZus{}pos}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{base}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{n}{min\PYGZus{}value}\PYG{p}{,} \PYG{n}{res}\PYG{p}{);}
+        \PYG{k}{return} \PYG{n}{res}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

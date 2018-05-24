@@ -1,0 +1,42 @@
+\documentclass[10pt,a4paper]{jsarticle}
+
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{ascmac}
+\usepackage{leading}
+
+\usepackage{minted}
+\usepackage[top=5truemm,bottom=15truemm,left=10truemm,right=10truemm]{geometry}
+
+\setminted[c++]{linenos, frame=lines}
+\leading{8pt}
+
+\newcommand{\library}[2]{
+    {\large #2}
+    \vspace{-10pt}
+    \inputminted{c++}{#1}
+}
+%
+\begin{document}
+\library{/Users/drafear/mylib/bin/src/kp_header.cpp}{Template}
+\library{../ahocorasick.cpp}{Ahocorasick}
+\library{../convex_hull_trick.cpp}{Convex Hull}
+\library{../fft.cpp}{FFT}
+\library{../geometry_comment.cpp}{Geometry}
+\library{../kd.cpp}{KD}
+\library{../math.cpp}{Math}
+\library{../max_flow.cpp}{Max Flow (Dinic)}
+\library{../min_cost_flow.cpp}{Min Cost Flow}
+\library{../potential_eq.cpp}{Potential Equation}
+\library{../rle.cpp}{Run Length Encoding}
+\library{../rollinghash.cpp}{Rolling Hash}
+\library{../maxset.cpp}{Slide Maximum}
+\library{../sa.cpp}{Suffix Array}
+\library{../scc.cpp}{SCC}
+\library{../segment_manager.cpp}{Segment Manager}
+\library{../sigma.cpp}{Sigma}
+\library{../segtree2.cpp}{Segment Tree}
+\library{../sst.cpp}{Starry Sky Tree}
+\library{../unionfind.cpp}{Union Find}
+\end{document}

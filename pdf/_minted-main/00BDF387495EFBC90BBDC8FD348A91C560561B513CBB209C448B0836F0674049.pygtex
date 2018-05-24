@@ -1,0 +1,52 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+
+\PYG{k}{typedef} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{ll}\PYG{p}{;}
+\PYG{k}{typedef} \PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{p}{,} \PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{P}\PYG{p}{;}
+
+\PYG{c+cp}{\PYGZsh{}define each(i,a) for (auto\PYGZam{}\PYGZam{} i : a)}
+\PYG{c+cp}{\PYGZsh{}define FOR(i,a,b) for (ll i=(a),\PYGZus{}\PYGZus{}last\PYGZus{}\PYGZsh{}\PYGZsh{}i=(b);i\PYGZlt{}\PYGZus{}\PYGZus{}last\PYGZus{}\PYGZsh{}\PYGZsh{}i;i++)}
+\PYG{c+cp}{\PYGZsh{}define RFOR(i,a,b) for (ll i=(b)\PYGZhy{}1,\PYGZus{}\PYGZus{}last\PYGZus{}\PYGZsh{}\PYGZsh{}i=(a);i\PYGZgt{}=\PYGZus{}\PYGZus{}last\PYGZus{}\PYGZsh{}\PYGZsh{}i;i\PYGZhy{}\PYGZhy{})}
+\PYG{c+cp}{\PYGZsh{}define REP(i,n) FOR(i,0,n)}
+\PYG{c+cp}{\PYGZsh{}define RREP(i,n) RFOR(i,0,n)}
+\PYG{c+cp}{\PYGZsh{}define \PYGZus{}\PYGZus{}GET\PYGZus{}MACRO3(\PYGZus{}1, \PYGZus{}2, \PYGZus{}3, NAME, ...) NAME}
+\PYG{c+cp}{\PYGZsh{}define rep(...) \PYGZus{}\PYGZus{}GET\PYGZus{}MACRO3(\PYGZus{}\PYGZus{}VA\PYGZus{}ARGS\PYGZus{}\PYGZus{}, FOR, REP)(\PYGZus{}\PYGZus{}VA\PYGZus{}ARGS\PYGZus{}\PYGZus{})}
+\PYG{c+cp}{\PYGZsh{}define rrep(...) \PYGZus{}\PYGZus{}GET\PYGZus{}MACRO3(\PYGZus{}\PYGZus{}VA\PYGZus{}ARGS\PYGZus{}\PYGZus{}, RFOR, RREP)(\PYGZus{}\PYGZus{}VA\PYGZus{}ARGS\PYGZus{}\PYGZus{})}
+\PYG{c+cp}{\PYGZsh{}define pb push\PYGZus{}back}
+\PYG{c+cp}{\PYGZsh{}define all(a) (a).begin(),(a).end()}
+\PYG{c+cp}{\PYGZsh{}define chmin(x,v) x = min(x, v)}
+\PYG{c+cp}{\PYGZsh{}define chmax(x,v) x = max(x, v)}
+
+\PYG{k}{const} \PYG{n}{ll} \PYG{n}{linf} \PYG{o}{=} \PYG{l+m+mf}{1e18}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{double} \PYG{n}{eps} \PYG{o}{=} \PYG{l+m+mf}{1e\PYGZhy{}12}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{double} \PYG{n}{pi} \PYG{o}{=} \PYG{n}{acos}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+
+\PYG{k}{template}\PYG{o}{\PYGZlt{}}\PYG{k}{typename} \PYG{n}{T}\PYG{o}{\PYGZgt{}}
+\PYG{n}{istream}\PYG{o}{\PYGZam{}} \PYG{k}{operator}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{istream}\PYG{o}{\PYGZam{}} \PYG{n}{is}\PYG{p}{,} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{vec}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{each}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{vec}\PYG{p}{)} \PYG{n}{is} \PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{x}\PYG{p}{;}
+    \PYG{k}{return} \PYG{n}{is}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k}{template}\PYG{o}{\PYGZlt{}}\PYG{k}{typename} \PYG{n}{T}\PYG{o}{\PYGZgt{}}
+\PYG{n}{ostream}\PYG{o}{\PYGZam{}} \PYG{k}{operator}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{p}{(}\PYG{n}{ostream}\PYG{o}{\PYGZam{}} \PYG{n}{os}\PYG{p}{,} \PYG{k}{const} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{vec}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{n}{vec}\PYG{p}{.}\PYG{n}{size}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{i}\PYG{p}{)} \PYG{n}{os} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{l+s}{\PYGZdq{} \PYGZdq{}}\PYG{p}{;}
+        \PYG{n}{os} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{vec}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{os}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k}{template}\PYG{o}{\PYGZlt{}}\PYG{k}{typename} \PYG{n}{T}\PYG{o}{\PYGZgt{}}
+\PYG{n}{ostream}\PYG{o}{\PYGZam{}} \PYG{k}{operator}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{p}{(}\PYG{n}{ostream}\PYG{o}{\PYGZam{}} \PYG{n}{os}\PYG{p}{,} \PYG{k}{const} \PYG{n}{vector}\PYG{o}{\PYGZlt{}} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}} \PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{vec}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{n}{vec}\PYG{p}{.}\PYG{n}{size}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{i}\PYG{p}{)} \PYG{n}{os} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{endl}\PYG{p}{;}
+        \PYG{n}{os} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{vec}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{os}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kt}{int} \PYG{n}{main}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{n}{ios}\PYG{o}{::}\PYG{n}{sync\PYGZus{}with\PYGZus{}stdio}\PYG{p}{(}\PYG{n+nb}{false}\PYG{p}{);}
+    \PYG{n}{cin}\PYG{p}{.}\PYG{n}{tie}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "*.cgi": "python",
+        "*.otex": "latex",
+        "bitset": "cpp",
+        "array": "cpp",
+        "hashtable": "cpp",
+        "valarray": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp",
+        "random": "cpp",
+        "*.tcc": "cpp",
+        "functional": "cpp",
+        "queue": "cpp",
+        "stack": "cpp"
+    }
+}

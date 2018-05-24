@@ -1,0 +1,74 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{const} \PYG{n}{ll} \PYG{n}{maxV} \PYG{o}{=} \PYG{l+m+mf}{3e5}\PYG{p}{;}
+
+\PYG{k}{struct} \PYG{n}{Edge} \PYG{p}{\PYGZob{}}
+    \PYG{n}{ll} \PYG{n}{to}\PYG{p}{,} \PYG{n}{cap}\PYG{p}{,} \PYG{n}{cost}\PYG{p}{,} \PYG{n}{rev}\PYG{p}{;}
+\PYG{p}{\PYGZcb{};}
+
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{Edge}\PYG{o}{\PYGZgt{}} \PYG{o}{\PYGZgt{}} \PYG{n}{G}\PYG{p}{;}
+
+\PYG{k+kt}{void} \PYG{n+nf}{add\PYGZus{}edge}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{from}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{to}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{cap}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{cost}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{from} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0} \PYG{o}{||} \PYG{n}{to} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{k}{return}\PYG{p}{;}
+    \PYG{n}{G}\PYG{p}{[}\PYG{n}{from}\PYG{p}{].}\PYG{n}{push\PYGZus{}back}\PYG{p}{(\PYGZob{}}\PYG{n}{to}\PYG{p}{,} \PYG{n}{cap}\PYG{p}{,} \PYG{n}{cost}\PYG{p}{,} \PYG{p}{(}\PYG{n}{ll}\PYG{p}{)}\PYG{n}{G}\PYG{p}{[}\PYG{n}{to}\PYG{p}{].}\PYG{n}{size}\PYG{p}{()\PYGZcb{});}
+    \PYG{n}{G}\PYG{p}{[}\PYG{n}{to}\PYG{p}{].}\PYG{n}{push\PYGZus{}back}\PYG{p}{(\PYGZob{}}\PYG{n}{from}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{n}{cost}\PYG{p}{,} \PYG{p}{(}\PYG{n}{ll}\PYG{p}{)}\PYG{n}{G}\PYG{p}{[}\PYG{n}{from}\PYG{p}{].}\PYG{n}{size}\PYG{p}{()}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{});}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{n}{ll} \PYG{n}{dist}\PYG{p}{[}\PYG{n}{maxV}\PYG{p}{],} \PYG{n}{h}\PYG{p}{[}\PYG{n}{maxV}\PYG{p}{]} \PYG{o}{=} \PYG{p}{\PYGZob{}}\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{},} \PYG{n}{prevV}\PYG{p}{[}\PYG{n}{maxV}\PYG{p}{],} \PYG{n}{prevE}\PYG{p}{[}\PYG{n}{maxV}\PYG{p}{];}
+\PYG{n}{ll} \PYG{n+nf}{min\PYGZus{}cost\PYGZus{}flow}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{s}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{t}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{f}\PYG{p}{,} \PYG{k+kt}{bool} \PYG{n}{is\PYGZus{}ford\PYGZus{}first} \PYG{o}{=} \PYG{n+nb}{false}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{ll} \PYG{n}{res} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{while} \PYG{p}{(}\PYG{n}{f} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{fill}\PYG{p}{(}\PYG{n}{dist}\PYG{p}{,} \PYG{n}{dist}\PYG{o}{+}\PYG{n}{maxV}\PYG{p}{,} \PYG{n}{linf}\PYG{p}{);} \PYG{n}{dist}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{is\PYGZus{}ford\PYGZus{}first}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{while} \PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{k+kt}{bool} \PYG{n}{is\PYGZus{}update} \PYG{o}{=} \PYG{n+nb}{false}\PYG{p}{;}
+                \PYG{n}{rep}\PYG{p}{(}\PYG{n}{v}\PYG{p}{,} \PYG{n}{G}\PYG{p}{.}\PYG{n}{size}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+                    \PYG{k}{if} \PYG{p}{(}\PYG{n}{dist}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{==} \PYG{n}{linf}\PYG{p}{)} \PYG{k}{continue}\PYG{p}{;}
+                    \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{].}\PYG{n}{size}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+                        \PYG{k}{const} \PYG{n}{Edge}\PYG{o}{\PYGZam{}} \PYG{n}{e} \PYG{o}{=} \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+                        \PYG{k}{if} \PYG{p}{(}\PYG{n}{e}\PYG{p}{.}\PYG{n}{cap} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dist}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{+} \PYG{n}{e}\PYG{p}{.}\PYG{n}{cost} \PYG{o}{\PYGZlt{}} \PYG{n}{dist}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+                            \PYG{n}{dist}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{]} \PYG{o}{=} \PYG{n}{dist}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{+} \PYG{n}{e}\PYG{p}{.}\PYG{n}{cost}\PYG{p}{;}
+                            \PYG{n}{prevV}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{]} \PYG{o}{=} \PYG{n}{v}\PYG{p}{;}
+                            \PYG{n}{prevE}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{]} \PYG{o}{=} \PYG{n}{i}\PYG{p}{;}
+                            \PYG{n}{is\PYGZus{}update} \PYG{o}{=} \PYG{n+nb}{true}\PYG{p}{;}
+                        \PYG{p}{\PYGZcb{}}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{k}{if} \PYG{p}{(}\PYG{o}{!}\PYG{n}{is\PYGZus{}update}\PYG{p}{)} \PYG{k}{break}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{n}{priority\PYGZus{}queue}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{p}{,} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}}\PYG{p}{,} \PYG{n}{greater}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}} \PYG{o}{\PYGZgt{}} \PYG{n}{Q}\PYG{p}{;} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(\PYGZob{}}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{s}\PYG{p}{\PYGZcb{});}
+            \PYG{k}{while} \PYG{p}{(} \PYG{o}{!}\PYG{n}{Q}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{()} \PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{n}{P} \PYG{n}{p} \PYG{o}{=} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+                \PYG{n}{ll} \PYG{n}{v} \PYG{o}{=} \PYG{n}{p}\PYG{p}{.}\PYG{n}{second}\PYG{p}{;}
+                \PYG{k}{if} \PYG{p}{(}\PYG{n}{p}\PYG{p}{.}\PYG{n}{first} \PYG{o}{\PYGZgt{}} \PYG{n}{dist}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{k}{continue}\PYG{p}{;}
+                \PYG{k}{for} \PYG{p}{(}\PYG{n}{ll} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{].}\PYG{n}{size}\PYG{p}{();} \PYG{o}{++}\PYG{n}{i}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                    \PYG{n}{Edge}\PYG{o}{\PYGZam{}} \PYG{n}{e} \PYG{o}{=} \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+                    \PYG{k}{if} \PYG{p}{(}\PYG{n}{e}\PYG{p}{.}\PYG{n}{cap} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dist}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{+}\PYG{n}{e}\PYG{p}{.}\PYG{n}{cost}\PYG{o}{+}\PYG{n}{h}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{h}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{n}{dist}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+                        \PYG{n}{dist}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{]} \PYG{o}{=} \PYG{n}{dist}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{+}\PYG{n}{e}\PYG{p}{.}\PYG{n}{cost}\PYG{o}{+}\PYG{n}{h}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{h}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{];}
+                        \PYG{n}{prevV}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{]} \PYG{o}{=} \PYG{n}{v}\PYG{p}{;}
+                        \PYG{n}{prevE}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{]} \PYG{o}{=} \PYG{n}{i}\PYG{p}{;}
+                        \PYG{n}{Q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(\PYGZob{}}\PYG{n}{dist}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{],} \PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{\PYGZcb{});}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{G}\PYG{p}{.}\PYG{n}{size}\PYG{p}{())} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{dist}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{dist}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]} \PYG{o}{==} \PYG{n}{linf}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{throw} \PYG{n}{res}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{ll} \PYG{n}{d} \PYG{o}{=} \PYG{n}{f}\PYG{p}{;}
+        \PYG{k}{for} \PYG{p}{(}\PYG{n}{ll} \PYG{n}{v} \PYG{o}{=} \PYG{n}{t}\PYG{p}{;} \PYG{n}{v} \PYG{o}{!=} \PYG{n}{s}\PYG{p}{;} \PYG{n}{v} \PYG{o}{=} \PYG{n}{prevV}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+            \PYG{n}{d} \PYG{o}{=} \PYG{n}{min}\PYG{p}{(}\PYG{n}{d}\PYG{p}{,} \PYG{n}{G}\PYG{p}{[}\PYG{n}{prevV}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]][}\PYG{n}{prevE}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]].}\PYG{n}{cap}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{f} \PYG{o}{\PYGZhy{}=} \PYG{n}{d}\PYG{p}{;}
+        \PYG{n}{res} \PYG{o}{+=} \PYG{n}{d} \PYG{o}{*} \PYG{n}{h}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+        \PYG{k}{for} \PYG{p}{(}\PYG{n}{ll} \PYG{n}{v} \PYG{o}{=} \PYG{n}{t}\PYG{p}{;} \PYG{n}{v} \PYG{o}{!=} \PYG{n}{s}\PYG{p}{;} \PYG{n}{v} \PYG{o}{=} \PYG{n}{prevV}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+            \PYG{n}{Edge}\PYG{o}{\PYGZam{}} \PYG{n}{e} \PYG{o}{=} \PYG{n}{G}\PYG{p}{[}\PYG{n}{prevV}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]][}\PYG{n}{prevE}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]];}
+            \PYG{n}{e}\PYG{p}{.}\PYG{n}{cap} \PYG{o}{\PYGZhy{}=} \PYG{n}{d}\PYG{p}{;}
+            \PYG{n}{G}\PYG{p}{[}\PYG{n}{e}\PYG{p}{.}\PYG{n}{to}\PYG{p}{][}\PYG{n}{e}\PYG{p}{.}\PYG{n}{rev}\PYG{p}{].}\PYG{n}{cap} \PYG{o}{+=} \PYG{n}{d}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{res}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

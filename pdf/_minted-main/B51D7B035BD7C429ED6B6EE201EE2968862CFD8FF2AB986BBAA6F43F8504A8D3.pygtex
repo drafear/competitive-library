@@ -1,0 +1,119 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//shared\PYGZus{}ptr使っているので低速}
+\PYG{k}{struct} \PYG{n}{po} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{index}\PYG{p}{;}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{coors}\PYG{p}{;}
+    \PYG{n}{po}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{\PYGZus{}d}\PYG{p}{)}\PYG{o}{:}\PYG{n}{coors}\PYG{p}{(}\PYG{n}{\PYGZus{}d}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{index} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{po}\PYG{p}{()} \PYG{p}{\PYGZob{}\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\PYG{k}{template}\PYG{o}{\PYGZlt{}}\PYG{k}{class} \PYG{n+nc}{T}\PYG{o}{\PYGZgt{}}
+\PYG{k}{class} \PYG{n+nc}{axisSorter} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{k}\PYG{p}{;}
+\PYG{k}{public}\PYG{o}{:}
+    \PYG{n}{axisSorter}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{\PYGZus{}k}\PYG{p}{)} \PYG{o}{:} \PYG{n}{k}\PYG{p}{(}\PYG{n}{\PYGZus{}k}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+    \PYG{k+kt}{bool} \PYG{k}{operator}\PYG{p}{()(}\PYG{k}{const} \PYG{n}{T} \PYG{o}{\PYGZam{}}\PYG{n}{a}\PYG{p}{,} \PYG{k}{const} \PYG{n}{T} \PYG{o}{\PYGZam{}}\PYG{n}{b}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{a}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{n}{b}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{k}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{k+kt}{int} \PYG{n+nf}{getdis}\PYG{p}{(}\PYG{k}{const} \PYG{n}{po}\PYG{o}{\PYGZam{}}\PYG{n}{l}\PYG{p}{,} \PYG{k}{const} \PYG{n}{po}\PYG{o}{\PYGZam{}}\PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{k+kt}{int} \PYG{n}{dis} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{l}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();} \PYG{o}{++}\PYG{n}{i}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{dis} \PYG{o}{+=} \PYG{p}{(}\PYG{n}{l}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{r}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}\PYG{o}{*}\PYG{p}{(}\PYG{n}{l}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{r}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{dis}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k}{template}\PYG{o}{\PYGZlt{}}\PYG{k}{class} \PYG{n+nc}{T}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{Dim} \PYG{o}{=} \PYG{l+m+mi}{2}\PYG{o}{\PYGZgt{}}
+\PYG{k}{struct} \PYG{n}{kdtree} \PYG{p}{\PYGZob{}}
+\PYG{k}{public}\PYG{o}{:}
+    \PYG{n}{T} \PYG{n}{val}\PYG{p}{;}
+  \PYG{n}{shared\PYGZus{}ptr}\PYG{o}{\PYGZlt{}}\PYG{n}{kdtree}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{ltree}\PYG{p}{,} \PYG{n}{rtree}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{depth}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{axis}\PYG{p}{;}
+    \PYG{n}{kdtree}\PYG{p}{(}\PYG{k}{const} \PYG{n}{T} \PYG{o}{\PYGZam{}}\PYG{n}{p\PYGZus{}}\PYG{p}{)} \PYG{o}{:}\PYG{n}{val}\PYG{p}{(}\PYG{n}{p\PYGZus{}}\PYG{p}{),} \PYG{n}{ltree}\PYG{p}{(}\PYG{k}{nullptr}\PYG{p}{),} \PYG{n}{rtree}\PYG{p}{(}\PYG{k}{nullptr}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{n}{kdtree}\PYG{p}{(}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZam{}}\PYG{n}{ps\PYGZus{}}\PYG{p}{,} \PYG{k}{const} \PYG{k+kt}{int}\PYG{o}{\PYGZam{}} \PYG{n}{l}\PYG{p}{,} \PYG{k}{const} \PYG{k+kt}{int}\PYG{o}{\PYGZam{}} \PYG{n}{r}\PYG{p}{,} \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{depth\PYGZus{}} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{o}{:} \PYG{n}{ltree}\PYG{p}{(}\PYG{k}{nullptr}\PYG{p}{),} \PYG{n}{rtree}\PYG{p}{(}\PYG{k}{nullptr}\PYG{p}{),} \PYG{n}{depth}\PYG{p}{(}\PYG{n}{depth\PYGZus{}}\PYG{p}{),} \PYG{n}{axis}\PYG{p}{(}\PYG{n}{depth}\PYG{o}{\PYGZpc{}}\PYG{n}{Dim}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{init}\PYG{p}{(}\PYG{n}{ps\PYGZus{}}\PYG{p}{,} \PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{o}{\PYGZti{}}\PYG{n}{kdtree}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{ltree} \PYG{o}{!=} \PYG{k}{nullptr}\PYG{p}{)}	\PYG{k}{delete}\PYG{p}{(}\PYG{n}{ltree}\PYG{p}{);}
+
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{rtree} \PYG{o}{!=} \PYG{k}{nullptr}\PYG{p}{)}\PYG{k}{delete}\PYG{p}{(}\PYG{n}{rtree}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//直方体内にある点の数を求める。}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{n}{query}\PYG{p}{(}\PYG{k}{const} \PYG{n}{T} \PYG{o}{\PYGZam{}} \PYG{n}{amin}\PYG{p}{,} \PYG{k}{const} \PYG{n}{T}\PYG{o}{\PYGZam{}}\PYG{n}{amax}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{n}{ans}\PYG{p}{;}
+        \PYG{k+kt}{bool} \PYG{n}{aok} \PYG{o}{=} \PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{Dim}\PYG{p}{;} \PYG{o}{++}\PYG{n}{i}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if} \PYG{p}{(}\PYG{n}{amin}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZlt{}=} \PYG{n}{val}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{val}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZlt{}=} \PYG{n}{amax}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{else} \PYG{p}{\PYGZob{}}
+                \PYG{n}{aok} \PYG{o}{=} \PYG{n+nb}{false}\PYG{p}{;}
+                \PYG{k}{break}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{aok}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{ans}\PYG{p}{.}\PYG{n}{emplace\PYGZus{}back}\PYG{p}{(}\PYG{n}{val}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{axisSorter}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}} \PYG{n}{as}\PYG{p}{(}\PYG{n}{axis}\PYG{p}{);}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{as}\PYG{p}{(}\PYG{n}{val}\PYG{p}{,} \PYG{n}{amax}\PYG{p}{)} \PYG{o}{||} \PYG{n}{val}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{axis}\PYG{p}{]} \PYG{o}{==} \PYG{n}{amax}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{axis}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if} \PYG{p}{(}\PYG{n}{rtree} \PYG{o}{!=} \PYG{k}{nullptr}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{n}{tans}\PYG{p}{(}\PYG{n}{rtree}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{query}\PYG{p}{(}\PYG{n}{amin}\PYG{p}{,} \PYG{n}{amax}\PYG{p}{));}
+                \PYG{n}{ans}\PYG{p}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),} \PYG{n}{tans}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{n}{tans}\PYG{p}{.}\PYG{n}{end}\PYG{p}{());}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{as}\PYG{p}{(}\PYG{n}{amin}\PYG{p}{,} \PYG{n}{val}\PYG{p}{)} \PYG{o}{||} \PYG{n}{val}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{axis}\PYG{p}{]} \PYG{o}{==} \PYG{n}{amin}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{axis}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if} \PYG{p}{(}\PYG{n}{ltree} \PYG{o}{!=} \PYG{k}{nullptr}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{n}{tans}\PYG{p}{(}\PYG{n}{ltree}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{query}\PYG{p}{(}\PYG{n}{amin}\PYG{p}{,} \PYG{n}{amax}\PYG{p}{));}
+                \PYG{n}{ans}\PYG{p}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{end}\PYG{p}{(),} \PYG{n}{tans}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{(),} \PYG{n}{tans}\PYG{p}{.}\PYG{n}{end}\PYG{p}{());}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//最近傍点を求める。}
+\PYG{k+kt}{void} \PYG{n}{get\PYGZus{}closest}\PYG{p}{(}\PYG{k}{const} \PYG{n}{T}\PYG{o}{\PYGZam{}} \PYG{n}{apo}\PYG{p}{,} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{k+kt}{int} \PYG{o}{\PYGZam{}}\PYG{n}{ans}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{ans} \PYG{o}{=} \PYG{n}{min}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,} \PYG{n}{getdis}\PYG{p}{(}\PYG{n}{apo}\PYG{p}{,} \PYG{n}{val}\PYG{p}{));}
+    \PYG{n}{axisSorter}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}} \PYG{n}{as}\PYG{p}{(}\PYG{n}{axis}\PYG{p}{);}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{as}\PYG{p}{(}\PYG{n}{apo}\PYG{p}{,} \PYG{n}{val}\PYG{p}{)} \PYG{o}{||} \PYG{n}{val}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{axis}\PYG{p}{]} \PYG{o}{==} \PYG{n}{apo}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{axis}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{ltree}\PYG{p}{)}\PYG{n}{ltree}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{get\PYGZus{}closest}\PYG{p}{(}\PYG{n}{apo}\PYG{p}{,} \PYG{n}{ans}\PYG{p}{);}
+        \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{k+kt}{int} \PYG{n}{dis} \PYG{o}{=} \PYG{n}{apo}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{axis}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{val}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{axis}\PYG{p}{];}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{dis}\PYG{o}{*}\PYG{n}{dis} \PYG{o}{\PYGZgt{}=} \PYG{n}{ans}\PYG{p}{)}\PYG{k}{return}\PYG{p}{;}
+        \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if} \PYG{p}{(}\PYG{n}{rtree}\PYG{p}{)}\PYG{n}{rtree}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{get\PYGZus{}closest}\PYG{p}{(}\PYG{n}{apo}\PYG{p}{,} \PYG{n}{ans}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{else} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{rtree}\PYG{p}{)}\PYG{n}{rtree}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{get\PYGZus{}closest}\PYG{p}{(}\PYG{n}{apo}\PYG{p}{,} \PYG{n}{ans}\PYG{p}{);}
+        \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{k+kt}{int} \PYG{n}{dis} \PYG{o}{=} \PYG{n}{val}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{axis}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{apo}\PYG{p}{.}\PYG{n}{coors}\PYG{p}{[}\PYG{n}{axis}\PYG{p}{];}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{dis}\PYG{o}{*}\PYG{n}{dis} \PYG{o}{\PYGZgt{}=} \PYG{n}{ans}\PYG{p}{)}\PYG{k}{return}\PYG{p}{;}
+        \PYG{k}{else} \PYG{p}{\PYGZob{}}
+            \PYG{k}{if} \PYG{p}{(}\PYG{n}{ltree}\PYG{p}{)}\PYG{n}{ltree}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{get\PYGZus{}closest}\PYG{p}{(}\PYG{n}{apo}\PYG{p}{,} \PYG{n}{ans}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k}{private}\PYG{o}{:}
+    \PYG{k+kt}{void} \PYG{n}{init}\PYG{p}{(}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZam{}}\PYG{n}{ps}\PYG{p}{,} \PYG{k}{const} \PYG{k+kt}{int}\PYG{o}{\PYGZam{}} \PYG{n}{l}\PYG{p}{,} \PYG{k}{const} \PYG{k+kt}{int}\PYG{o}{\PYGZam{}} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{l} \PYG{o}{\PYGZgt{}=} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{return}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{mid} \PYG{o}{=} \PYG{p}{(}\PYG{n}{l} \PYG{o}{+} \PYG{n}{r}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mi}{2}\PYG{p}{;}
+        \PYG{n}{nth\PYGZus{}element}\PYG{p}{(}\PYG{n}{ps}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{()} \PYG{o}{+} \PYG{n}{l}\PYG{p}{,} \PYG{n}{ps}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{()} \PYG{o}{+} \PYG{n}{mid}\PYG{p}{,} \PYG{n}{ps}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{()} \PYG{o}{+} \PYG{n}{r}\PYG{p}{,} \PYG{n}{axisSorter}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{axis}\PYG{p}{));}
+        \PYG{n}{val} \PYG{o}{=} \PYG{n}{ps}\PYG{p}{[}\PYG{n}{mid}\PYG{p}{];}
+        \PYG{n}{ltree} \PYG{o}{=} \PYG{n}{make\PYGZus{}kdtree}\PYG{p}{(}\PYG{n}{ps}\PYG{p}{,} \PYG{n}{l}\PYG{p}{,} \PYG{n}{mid}\PYG{p}{,} \PYG{n}{depth} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{rtree} \PYG{o}{=} \PYG{n}{make\PYGZus{}kdtree}\PYG{p}{(}\PYG{n}{ps}\PYG{p}{,} \PYG{n}{mid} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{n}{depth} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+
+\PYG{p}{\PYGZcb{};}
+\PYG{c+c1}{//[l..r)}
+\PYG{k}{template}\PYG{o}{\PYGZlt{}}\PYG{k}{class} \PYG{n+nc}{T}\PYG{o}{\PYGZgt{}}
+\PYG{n}{unique\PYGZus{}ptr}\PYG{o}{\PYGZlt{}}\PYG{n}{kdtree}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{n}{make\PYGZus{}kdtree}\PYG{p}{(}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZam{}}\PYG{n}{ps\PYGZus{}}\PYG{p}{,} \PYG{k}{const} \PYG{k+kt}{int}\PYG{o}{\PYGZam{}} \PYG{n}{l}\PYG{p}{,} \PYG{k}{const} \PYG{k+kt}{int}\PYG{o}{\PYGZam{}} \PYG{n}{r}\PYG{p}{,} \PYG{k}{const} \PYG{k+kt}{int}\PYG{o}{\PYGZam{}} \PYG{n}{depth} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{l} \PYG{o}{\PYGZgt{}=} \PYG{n}{r}\PYG{p}{)}\PYG{k}{return} \PYG{k}{nullptr}\PYG{p}{;}
+    \PYG{k}{else} \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{make\PYGZus{}unique}\PYG{o}{\PYGZlt{}}\PYG{n}{kdtree}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{p}{(}\PYG{n}{ps\PYGZus{}}\PYG{p}{,} \PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{n}{depth}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

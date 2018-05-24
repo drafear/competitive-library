@@ -1,0 +1,25 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{MaxSet} \PYG{p}{\PYGZob{}}
+    \PYG{n}{deque}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}} \PYG{n}{deq}\PYG{p}{;}
+\PYG{k}{public}\PYG{o}{:}
+    \PYG{n}{MaxSet}\PYG{p}{()} \PYG{p}{\PYGZob{}\PYGZcb{}}
+    \PYG{n}{ll} \PYG{n}{get}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{deq}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{k}{return} \PYG{o}{\PYGZhy{}}\PYG{n}{linf}\PYG{p}{;}
+        \PYG{k}{return} \PYG{n}{deq}\PYG{p}{.}\PYG{n}{front}\PYG{p}{().}\PYG{n}{first}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{// 値x, 時刻t}
+    \PYG{n}{ll} \PYG{n}{add}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{x}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{t}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{deq}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{n}{assert}\PYG{p}{(}\PYG{n}{t} \PYG{o}{\PYGZgt{}} \PYG{n}{deq}\PYG{p}{.}\PYG{n}{back}\PYG{p}{().}\PYG{n}{second}\PYG{p}{);}
+        \PYG{k}{while} \PYG{p}{(}\PYG{n}{deq}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{deq}\PYG{p}{.}\PYG{n}{back}\PYG{p}{().}\PYG{n}{first} \PYG{o}{\PYGZlt{}=} \PYG{n}{x}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{deq}\PYG{p}{.}\PYG{n}{pop\PYGZus{}back}\PYG{p}{();}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{deq}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{P}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,} \PYG{n}{t}\PYG{p}{));}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{// t未満削除}
+    \PYG{n}{ll} \PYG{n}{erase}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{t}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{while} \PYG{p}{(}\PYG{n}{deq}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{deq}\PYG{p}{.}\PYG{n}{front}\PYG{p}{().}\PYG{n}{second} \PYG{o}{\PYGZlt{}} \PYG{n}{t}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{deq}\PYG{p}{.}\PYG{n}{pop\PYGZus{}front}\PYG{p}{();}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

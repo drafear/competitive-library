@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import sys
+import subprocess
+import re
+import tempfile
+
+def parser():
+  parser = argparse.ArgumentParser(description="Compile 'test/<test-name>.<suffix>.cpp' and test it")
+  parser.add_argument('-l', '--local', dest='local', help='compile and run locally', action='store_true')
+  parser.add_argument('-i', '--stdin', dest='stdin', help='force change input to stdin', action='store_true')
+  parser.add_argument('test_name', metavar='test-name', type=str)
+  parser.add_argument('suffix', type=str, nargs='?', default='test')
+  return parser
+
+class Executable:
+  def __init__(self, file_path, delete=True):
+    self.file_path = file_path
+    self.delete = delete
+    self.input_data = ''
+  def input(self, input_data):
+    self.input_data = input_data
+    return self
+  def run(self):
+    command_str = self.file_path
+    proc = subprocess.Popen(command_str, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    proc.stdin.write(self.input_data)
+    proc.stdin.close()
+    status = proc.wait()
+    getattr(sys.stdout, 'buffer').write(proc.stdout.read())
+    getattr(sys.stderr, 'buffer').write(proc.stderr.read())
+    return status
+  def __enter__(self):
+    return self
+  def __exit__(self, exception_type, exception_value, traceback):
+    os.remove(self.file_path)
+
+class Compiler:
+  # command_str: '... [src] ... [dest] ...'
+  def __init__(self, command_str):
+    self.command_str = command_str
+  def compile(self, src_file_path, dest_file_path):
+    command_str = self.command_str \
+      .replace('[src]', src_file_path) \
+      .replace('[dest]', dest_file_path)
+    proc = subprocess.Popen(command_str.strip().split(" "), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    status = proc.wait()
+    getattr(sys.stdout, 'buffer').write(proc.stdout.read())
+    getattr(sys.stderr, 'buffer').write(proc.stderr.read())
+    if status != 0:
+      print(status)
+      exit(status)
+
+  @staticmethod
+  def get_gcc_compiler():
+    return Compiler("g++ -o [dest] -O2 --std=c++14 [src]")
+  @staticmethod
+  def selectFromFname(ext):
+    if ext == '.cpp':
+      return Compiler.get_gcc_compiler()
+    else:
+      raise RuntimeError("no compiler for {0}".format(ext))
+
+class Program:
+  def __init__(self, compiler, source):
+    self.compiler = compiler
+    self.source = source
+    self.tempfile = tempfile.NamedTemporaryFile(mode='w', suffix='.cpp', delete=False)
+  @staticmethod
+  def load(file_path):
+    src = ""
+    reg_exp = re.compile(r'^#include "([^"]+)"')
+    with open(file_path, encoding='utf-8') as f:
+      for line in f:
+        mc = reg_exp.match(line)
+        if mc:
+          with open(os.path.join(os.path.dirname(file_path), mc.group(1))) as flib:
+            lib_str = flib.read()
+            src += reg_exp.sub(lib_str, line)
+        else:
+          src += line
+    return Program(Compiler.selectFromFname(os.path.splitext(file_path)[1]), src)
+
+  def _outname(self):
+    return self.tempfile.name + '.out'
+
+  def write_to_temp(self):
+    self.tempfile.write(self.source)
+    self.tempfile.close()
+
+  def compile(self):
+    self.write_to_temp()
+    self.compiler.compile(self.tempfile.name, self._outname())
+    return Executable(self._outname())
+
+  def __enter__(self):
+    self.tempfile.__enter__()
+    return self
+
+  def __exit__(self, exception_type, exception_value, traceback):
+    self.tempfile.__exit__(exception_type, exception_value, traceback)
+    os.remove(self.tempfile.name)
+
+def write_log(title, sub_title, message):
+  print("[{0}.{1}] {2}".format(title, sub_title, message))
+
+def test_local(args):
+  test_name = os.path.splitext(args.test_name)[0]
+  program_name = 'verify/{0}.{1}.cpp'.format(test_name, args.suffix)
+  input_file_path = 'verify/{0}.{1}.in'.format(test_name, args.suffix)
+  write_log(test_name, args.suffix, 'Loading...')
+  status = 1
+  with Program.load(program_name) as program:
+    write_log(test_name, args.suffix, 'Compiling...')
+    with program.compile() as executable:
+      write_log(test_name, args.suffix, 'ReadingInput...')
+      if not args.stdin and os.path.exists(input_file_path):
+        with open(input_file_path, mode='r+b') as input_fs:
+          input_data = input_fs.read()
+      else:
+        input_data = getattr(sys.stdin, 'buffer').read()
+      write_log(test_name, args.suffix, 'Running')
+      status = executable.input(input_data).run()
+  exit(status)
+
+def test_online(args):
+  pass
+
+def main():
+  args = parser().parse_args()
+  if args.local:
+    test_local(args)
+  else:
+    test_online(args)
+
+main()
