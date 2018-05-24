@@ -1,7 +1,7 @@
 /*==start==
 judge: atcoder
-contest_name: yahoo-procon2018-final
-task_name: yahoo_procon2018_final_d
+contest_name: arc055
+task_name: arc055_c
 ==end==*/
 #include <bits/stdc++.h>
 
@@ -50,42 +50,27 @@ ostream& operator<<(ostream& os, const vector< vector<T> >& vec) {
 }
 
 #include "../z-algorithm.cpp"
-#include "../unionfind.cpp"
 
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(0);
-  const ll M = 20;
-  ll n; cin >> n;
-  vector<ll> l(n); cin >> l;
-  vector<UnionFind> uf(M, UnionFind(n));
-  rep(i, n) {
-    if (l[i] == 0) continue;
-    ll k = 0;
-    while ((1LL<<k+1) <= l[i]) ++k;
-    ll d = l[i] - (1LL<<k);
-    // cout << k << " " << l[i] << " " << d << endl;
-    assert(0 <= d && d < (1LL<<k));
-    uf[k].unite(0, n-i-1);
-    uf[k].unite(d, n-i-1+d);
-  }
-  rrep(i, 1, M) rep(j, n) {
-    uf[i-1].unite(j, uf[i].root(j));
-    // if (j != uf[i].root(j)) cout << i-1 << " " << j << " " << uf[i].root(j) << endl;
-    ll u = j+(1LL<<i-1), v = uf[i].root(j)+(1LL<<i-1);
-    if (u < n && v < n) {
-      // cout << i-1 << " " << u << " " << v << endl;
-      uf[i-1].unite(u, v);
+  string s; cin >> s;
+  const ll n = s.size();
+  string rs = s;
+  reverse(all(rs));
+  vector<ll> Z = Z_algorithm(s);
+  vector<ll> rZ = Z_algorithm(rs);
+  ll ans = 0;
+  rep(i, 1, n) {
+    ll AClen = n-i;
+    if (i <= AClen) continue;
+    if (AClen < 2) continue;
+    ll left = min(AClen-1, Z[i]);
+    ll right = min(AClen-1, rZ[n-i]);
+    if (left + right >= AClen) {
+      ans += left + right - AClen + 1;
+      // cout << i << " " << left << " " << right << " " << AClen << " " << left+right-AClen+1 << endl;
     }
   }
-  vector<ll> s(n);
-  rep(i, n) s[i] = uf[0].root(i);
-  vector<ll> Z = Z_algorithm(all(s));
-  reverse(all(Z));
-  if (Z == l) {
-    cout << "Yes" << endl;
-  }
-  else {
-    cout << "No" << endl;
-  }
+  cout << ans << endl;
 }

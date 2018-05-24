@@ -1,27 +1,25 @@
-vector<ll> Z_algorithm(const string& s) {
-  const ll n = s.size();
+template<class ForwardIterator>
+vector<ll> Z_algorithm(ForwardIterator first, ForwardIterator last) {
+  const ll n = last - first;
   vector<ll> Z(n, 0);
-  Z[0] = n;
-  ll left = 0, right = 0;
+  ll left = 0;
   rep(i, 1, n) {
-    if (i > right) {
-      left = right = i;
-      for (; right < n && s[right - left] == s[right]; right++);
-      Z[i] = right - left;
-      right--;
+    ll right = left + Z[left];
+    if (i < right && Z[i - left] < right - i) {
+      Z[i] = Z[i - left];
     }
     else {
-      int k = i - left;
-      if (Z[k] < right - i + 1) {
-          Z[i] = Z[k];
+      left = i;
+      chmax(right, left);
+      while (right < n && *(first + right - i) == *(first + right)) {
+        ++right;
       }
-      else {
-        left = i;
-        for (; right < n && s[right - left] == s[right]; right++);
-        Z[i] = right - left;
-        right--;
-      }
+      Z[i] = right - i;
     }
   }
+  Z[0] = n;
   return Z;
+}
+vector<ll> Z_algorithm(const string& s) {
+  return Z_algorithm(all(s));
 }
