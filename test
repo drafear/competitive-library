@@ -6,9 +6,13 @@ import sys
 import subprocess
 import re
 import tempfile
+import webbrowser
+import traceback
+from modules import atcoder
 
 def parser():
   parser = argparse.ArgumentParser(description="Compile 'test/<test-name>.<suffix>.cpp' and test it")
+  parser.add_argument('-o', '--output-source', dest='output', type=str, help='only merge source and output it to this file')
   parser.add_argument('-l', '--local', dest='local', help='compile and run locally', action='store_true')
   parser.add_argument('-i', '--stdin', dest='stdin', help='force change input to stdin', action='store_true')
   parser.add_argument('test_name', metavar='test-name', type=str)
@@ -50,7 +54,6 @@ class Compiler:
     getattr(sys.stdout, 'buffer').write(proc.stdout.read())
     getattr(sys.stderr, 'buffer').write(proc.stderr.read())
     if status != 0:
-      print(status)
       exit(status)
 
   @staticmethod
@@ -64,24 +67,39 @@ class Compiler:
       raise RuntimeError("no compiler for {0}".format(ext))
 
 class Program:
-  def __init__(self, compiler, source):
+  def __init__(self, compiler, source, config={}):
     self.compiler = compiler
     self.source = source
     self.tempfile = tempfile.NamedTemporaryFile(mode='w', suffix='.cpp', delete=False)
+    self.config = config
   @staticmethod
   def load(file_path):
     src = ""
-    reg_exp = re.compile(r'^#include "([^"]+)"')
+    include_reg = re.compile(r'^#include "([^"]+)"')
+    config_start_reg = re.compile(r'.*==start==')
+    config_parse_reg = re.compile(r'[ \t]*([^:]+): ?(.+)')
+    config_end_reg = re.compile(r'.*==end==')
+    is_config = False
+    config = {}
     with open(file_path, encoding='utf-8') as f:
       for line in f:
-        mc = reg_exp.match(line)
-        if mc:
-          with open(os.path.join(os.path.dirname(file_path), mc.group(1))) as flib:
-            lib_str = flib.read()
-            src += reg_exp.sub(lib_str, line)
+        if config_start_reg.match(line):
+          is_config = True
+        elif config_end_reg.match(line):
+          is_config = False
+        elif is_config:
+          mc = config_parse_reg.match(line)
+          if mc:
+            config[mc.group(1)] = mc.group(2)
         else:
-          src += line
-    return Program(Compiler.selectFromFname(os.path.splitext(file_path)[1]), src)
+          mc = include_reg.match(line)
+          if mc:
+            with open(os.path.join(os.path.dirname(file_path), mc.group(1))) as flib:
+              lib_str = flib.read()
+              src += include_reg.sub(lib_str, line)
+          else:
+            src += line
+    return Program(Compiler.selectFromFname(os.path.splitext(file_path)[1]), src, config=config)
 
   def _outname(self):
     return self.tempfile.name + '.out'
@@ -95,6 +113,21 @@ class Program:
     self.compiler.compile(self.tempfile.name, self._outname())
     return Executable(self._outname())
 
+  def save(self, target_file):
+    with open(target_file, 'w') as fs:
+      fs.write(self.source)
+
+  def submit(self):
+    assert 'judge' in self.config, 'write `judge: [atcoder/aoj]` between `==start==` and `==end==` line in the program'
+    if self.config['judge'] == 'atcoder':
+      assert 'contest_name' in self.config, 'missing config parameter: `contest_name`\nexample: `contest_name: arc055`'
+      assert 'task_name' in self.config, 'missing config parameter: `task_name`\nexample: `task_name: arc055_c`'
+      atcoder.submit(
+        source_code=self.source,
+        contest_name=self.config['contest_name'],
+        task_name=self.config['task_name'],
+      )
+
   def __enter__(self):
     self.tempfile.__enter__()
     return self
@@ -103,12 +136,16 @@ class Program:
     self.tempfile.__exit__(exception_type, exception_value, traceback)
     os.remove(self.tempfile.name)
 
+def get_test_and_program_name(args):
+  test_name = os.path.splitext(args.test_name)[0]
+  program_name = 'verify/{0}.{1}.cpp'.format(test_name, args.suffix)
+  return test_name, program_name
+
 def write_log(title, sub_title, message):
   print("[{0}.{1}] {2}".format(title, sub_title, message))
 
 def test_local(args):
-  test_name = os.path.splitext(args.test_name)[0]
-  program_name = 'verify/{0}.{1}.cpp'.format(test_name, args.suffix)
+  test_name, program_name = get_test_and_program_name(args)
   input_file_path = 'verify/{0}.{1}.in'.format(test_name, args.suffix)
   write_log(test_name, args.suffix, 'Loading...')
   status = 1
@@ -126,13 +163,32 @@ def test_local(args):
   exit(status)
 
 def test_online(args):
-  pass
+  test_name, program_name = get_test_and_program_name(args)
+  write_log(test_name, args.suffix, 'Loading...')
+  with Program.load(program_name) as program:
+    write_log(test_name, args.suffix, 'Submitting...')
+    program.submit()
+    write_log(test_name, args.suffix, 'Submitted!!')
+    contest_name = program.config['contest_name']
+  webbrowser.open('https://beta.atcoder.jp/contests/{0}/submissions/me'.format(contest_name))
+
+def merge_only(args):
+  _, program_name = get_test_and_program_name(args)
+  with Program.load(program_name) as program:
+    program.save(args.output)
 
 def main():
-  args = parser().parse_args()
-  if args.local:
-    test_local(args)
-  else:
-    test_online(args)
+  try:
+    args = parser().parse_args()
+    if args.output:
+      merge_only(args)
+    elif args.local:
+      test_local(args)
+    else:
+      test_online(args)
+  except Exception as e:
+    sys.stderr.write(traceback.format_exc()+'\n')
+    sys.stderr.write(str(e) + '\n')
+    exit(1)
 
 main()

@@ -1,3 +1,8 @@
+/*==start==
+judge: atcoder
+contest_name: arc055
+task_name: arc055_c
+==end==*/
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -49,6 +54,23 @@ ostream& operator<<(ostream& os, const vector< vector<T> >& vec) {
 int main() {
   ios::sync_with_stdio(false);
   cin.tie(0);
-  ll n; cin >> n;
-  cout << n << endl;
+  string s; cin >> s;
+  const ll n = s.size();
+  string rs = s;
+  reverse(all(rs));
+  vector<ll> Z = Z_algorithm(s);
+  vector<ll> rZ = Z_algorithm(rs);
+  ll ans = 0;
+  rep(i, 1, n) {
+    ll AClen = n-i;
+    if (i <= AClen) continue;
+    if (AClen < 2) continue;
+    ll left = min(AClen-1, Z[i]);
+    ll right = min(AClen-1, rZ[n-i]);
+    if (left + right >= AClen) {
+      ans += left + right - AClen + 1;
+      // cout << i << " " << left << " " << right << " " << AClen << " " << left+right-AClen+1 << endl;
+    }
+  }
+  cout << ans << endl;
 }
