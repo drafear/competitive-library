@@ -1,27 +1,25 @@
 // 傾き単調減少
 // getクエリ単調増加
-class ConvexHull {
-    deque<ll> a, b;
-    bool check(ll f1, ll f2, ll aa, ll bb) {
-        return (a[f2] - a[f1]) * (bb - b[f2]) >= (b[f2] - b[f1]) * (aa - a[f2]);
-    }
-    ll f(ll fid, ll x) {
-        return a[fid] * x + b[fid];
-    }
-public:
-    void add(ll aa, ll bb) {
-        while (a.size() >= 2 && check(a.size()-2, a.size()-1, aa, bb)) {
-            a.pop_back();
-            b.pop_back();
-        }
-        a.push_back(aa);
-        b.push_back(bb);
-    }
-    ll get_min(ll x) {
-        while (a.size() >= 2 && f(0, x) >= f(1, x)) {
-            a.pop_front();
-            b.pop_front();
-        }
-        return a[0] * x + b[0];
-    }
+template <class Data> struct ConvexHullTrick {
+  std::deque<std::pair<Data, Data>> l;
+  bool check(std::pair<Data, Data> l3) {
+    const auto l1 = *prev(end(l), 2);
+    const auto l2 = *prev(end(l), 1);
+    Data a = (l2.first - l1.first) * (l3.second - l2.second);
+    Data b = (l2.second - l1.second) * (l3.first - l2.first);
+    return a >= b;
+  }
+  bool empty() const { return l.empty(); }
+  void add(Data a, Data b) {
+    if (!empty()) assert(l.back().first >= a);
+    std::pair<Data, Data> n(a, b);
+    while ((int)l.size() >= 2 && check(n)) l.pop_back();
+    l.emplace_back(n);
+  }
+  Data f(int k, Data x) { return l[k].first * x + l[k].second; }
+  Data minimum(Data x) {
+    assert(!empty());
+    while ((int)l.size() >= 2 && f(0, x) >= f(1, x)) l.pop_front();
+    return f(0, x);
+  }
 };

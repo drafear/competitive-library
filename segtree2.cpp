@@ -1,54 +1,36 @@
-template <class Monoid>
+// SegmentTree<int> seg(n, 0x7FFFFFFF, [](int a, int b){return min(a, b);});
+template <typename T>
 class SegmentTree {
-    using T = typename Monoid::type;
-    const int size_, n;
-    std::vector<T> data;
-    int expand(int m) const { return m == 1 ? m : expand((m + 1) / 2) * 2; }
+  using func_t = function<T(T, T)>;
+  const int n;
+  const T id;
+  func_t merge;
+  vector<T> data;
+  T sub(int l, int r, int node, int lb, int ub) {
+    if (ub <= l || r <= lb) return id;
+    if (l <= lb && ub <= r) return data[node];
+    T vl = sub(l, r, node * 2 + 0, lb, (lb + ub) / 2);
+    T vr = sub(l, r, node * 2 + 1, (lb + ub) / 2, ub);
+    return merge(vl, vr);
+  }
+  int size(int n) {
+    int res;
+    for (res = 1; res < n; res <<= 1);
+    return res;
+  }
 public:
-    SegmentTree(const std::vector<T> &vec) :
-        size_(vec.size()), n(expand(size_)), data(n * 2, Monoid::id()) {
-        std::copy(begin(vec), end(vec), begin(data) + n);
-        for (int i = n - 1; i >= 0; --i) {
-            data[i] = Monoid::op(data[i * 2 + 0], data[i * 2 + 1]);
-        }
+  SegmentTree(int n, T id, func_t merge) :
+    n(size(n)), id(id), merge(merge), data(size(n) * 2, id) {}
+  void update(int p, T val) {
+    assert (0 <= p && p < n);
+    p += n;
+    data[p] = val;
+    while (p /= 2) {
+      int l = p * 2, r = p * 2 + 1;
+      data[p] = merge(data[l], data[r]);
     }
-    SegmentTree(const int count, const T &value = Monoid::id()) :
-        SegmentTree(std::vector<T>(count, value)) {}
-    int size() const { return size_; }
-    void update(int pos, const T &value) {
-        assert (0 <= pos && pos < size_); // assertion
-        data[pos += n] = value;
-        while (pos /= 2) {
-            data[pos] = Monoid::op(data[pos * 2], data[pos * 2 + 1]);
-        }
-    }
-    T query(int l, int r) const {
-        assert (0 <= l && l <= r && r <= size_); // assertion
-        l += n; r += n;
-        T res1 = Monoid::id(), res2 = Monoid::id();
-        while (l != r) {
-            if (l % 2) res1 = Monoid::op(res1, data[l++]);
-            if (r % 2) res2 = Monoid::op(data[--r], res2);
-            l /= 2; r /= 2;
-        }
-        return Monoid::op(res1, res2);
-    }
-    using value_type = T;
-    using update_type = T;
-};
-
-struct Min {
-    using type = ll;
-    static type id() { return linf; }
-    static type op(const type &l, const type &r) { return min(l, r); }
-};
-struct Max {
-    using type = ll;
-    static type id() { return -linf; }
-    static type op(const type &l, const type &r) { return max(l, r); }
-};
-struct Sum {
-    using type = ll;
-    static type id() { return 0; }
-    static type op(const type &l, const type &r) { return l + r; }
+  }
+  T find(int l, int r) {
+    return sub(l, r, 1, 0, n);
+  }
 };
