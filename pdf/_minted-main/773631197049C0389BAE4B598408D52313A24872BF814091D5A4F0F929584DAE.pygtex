@@ -1,0 +1,32 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{UnionFind} \PYG{p}{\PYGZob{}}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{par}\PYG{p}{,} \PYG{n}{h}\PYG{p}{,} \PYG{n}{sz}\PYG{p}{;}
+\PYG{k}{public}\PYG{o}{:}
+  \PYG{n}{UnionFind}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{size}\PYG{p}{)} \PYG{o}{:} \PYG{n}{par}\PYG{p}{(}\PYG{n}{size}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{),} \PYG{n}{h}\PYG{p}{(}\PYG{n}{size}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{),} \PYG{n}{sz}\PYG{p}{(}\PYG{n}{size}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{size}\PYG{p}{)} \PYG{n}{par}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{i}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{void} \PYG{n}{unite}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{u}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{v}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{u} \PYG{o}{=} \PYG{n}{root}\PYG{p}{(}\PYG{n}{u}\PYG{p}{),} \PYG{n}{v} \PYG{o}{=} \PYG{n}{root}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{u} \PYG{o}{==} \PYG{n}{v}\PYG{p}{)} \PYG{k}{return}\PYG{p}{;}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{\PYGZlt{}} \PYG{n}{h}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+      \PYG{n}{par}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{=} \PYG{n}{v}\PYG{p}{;}
+      \PYG{n}{sz}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{sz}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{else} \PYG{p}{\PYGZob{}}
+      \PYG{n}{par}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{=} \PYG{n}{u}\PYG{p}{;}
+      \PYG{n}{sz}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{sz}\PYG{p}{[}\PYG{n}{v}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{==} \PYG{n}{h}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{o}{++}\PYG{n}{h}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{ll} \PYG{n}{size}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{v}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{sz}\PYG{p}{[}\PYG{n}{root}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)];}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{bool} \PYG{n}{isUnited}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{u}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{v}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{root}\PYG{p}{(}\PYG{n}{u}\PYG{p}{)} \PYG{o}{==} \PYG{n}{root}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{ll} \PYG{n}{root}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{v}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{par}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{==} \PYG{n}{v}\PYG{p}{)} \PYG{k}{return} \PYG{n}{v}\PYG{p}{;}
+    \PYG{k}{return} \PYG{n}{par}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{=} \PYG{n}{root}\PYG{p}{(}\PYG{n}{par}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]);}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

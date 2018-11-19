@@ -1,0 +1,94 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{SegmentManager} \PYG{p}{\PYGZob{}}
+  \PYG{n}{ll} \PYG{n}{len}\PYG{p}{;}
+  \PYG{n}{set}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}} \PYG{n}{s}\PYG{p}{;}
+  \PYG{n}{ll} \PYG{n+nf}{length}\PYG{p}{(}\PYG{k}{const} \PYG{n}{P}\PYG{o}{\PYGZam{}} \PYG{n}{p}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{p}\PYG{p}{.}\PYG{n}{second} \PYG{o}{\PYGZhy{}} \PYG{n}{p}\PYG{p}{.}\PYG{n}{first}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{set}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}::}\PYG{n}{iterator} \PYG{n}{erase}\PYG{p}{(}\PYG{k}{const} \PYG{n}{set}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}::}\PYG{n}{iterator} \PYG{n}{it}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{len} \PYG{o}{\PYGZhy{}=} \PYG{n}{length}\PYG{p}{(}\PYG{o}{*}\PYG{n}{it}\PYG{p}{);}
+    \PYG{k}{return} \PYG{n}{s}\PYG{p}{.}\PYG{n}{erase}\PYG{p}{(}\PYG{n}{it}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{void} \PYG{n}{insert}\PYG{p}{(}\PYG{k}{const} \PYG{n}{P}\PYG{o}{\PYGZam{}} \PYG{n}{p}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{len} \PYG{o}{+=} \PYG{n}{length}\PYG{p}{(}\PYG{n}{p}\PYG{p}{);}
+    \PYG{n}{s}\PYG{p}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{n}{p}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{set}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}::}\PYG{n}{iterator} \PYG{n}{lb}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{s}\PYG{p}{.}\PYG{n}{lower\PYGZus{}bound}\PYG{p}{(\PYGZob{}}\PYG{n}{l}\PYG{p}{,} \PYG{n}{l}\PYG{p}{\PYGZcb{});}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{set}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}::}\PYG{n}{iterator} \PYG{n}{ub}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{lb}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+\PYG{k}{public}\PYG{o}{:}
+  \PYG{n}{SegmentManager}\PYG{p}{()} \PYG{o}{:} \PYG{n}{len}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+  \PYG{k+kt}{void} \PYG{n}{add}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZlt{}=} \PYG{n}{l}\PYG{p}{)} \PYG{k}{return}\PYG{p}{;}
+    \PYG{n}{erase}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{);}
+    \PYG{c+c1}{// merge right}
+    \PYG{p}{\PYGZob{}}
+      \PYG{k}{auto} \PYG{n}{it} \PYG{o}{=} \PYG{n}{lb}\PYG{p}{(}\PYG{n}{r}\PYG{p}{);}
+      \PYG{k}{if} \PYG{p}{(}\PYG{n}{it} \PYG{o}{!=} \PYG{n}{s}\PYG{p}{.}\PYG{n}{end}\PYG{p}{()} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{first} \PYG{o}{==} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{r} \PYG{o}{=} \PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second}\PYG{p}{;}
+        \PYG{n}{erase}\PYG{p}{(}\PYG{n}{it}\PYG{p}{);}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{// merge left}
+    \PYG{p}{\PYGZob{}}
+      \PYG{k}{auto} \PYG{n}{it} \PYG{o}{=} \PYG{n}{lb}\PYG{p}{(}\PYG{n}{l}\PYG{p}{);}
+      \PYG{k}{if} \PYG{p}{(}\PYG{n}{it} \PYG{o}{!=} \PYG{n}{s}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+        \PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{it}\PYG{p}{;}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second} \PYG{o}{==} \PYG{n}{l}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+          \PYG{n}{l} \PYG{o}{=} \PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{first}\PYG{p}{;}
+          \PYG{n}{erase}\PYG{p}{(}\PYG{n}{it}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{// add}
+    \PYG{n}{insert}\PYG{p}{(\PYGZob{}}\PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{\PYGZcb{});}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{void} \PYG{n}{erase}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZlt{}=} \PYG{n}{l}\PYG{p}{)} \PYG{k}{return}\PYG{p}{;}
+    \PYG{c+c1}{// cut left}
+    \PYG{p}{\PYGZob{}}
+      \PYG{k}{auto} \PYG{n}{it} \PYG{o}{=} \PYG{n}{lb}\PYG{p}{(}\PYG{n}{l}\PYG{p}{);}
+      \PYG{k}{if} \PYG{p}{(}\PYG{n}{it} \PYG{o}{!=} \PYG{n}{s}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+        \PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{it}\PYG{p}{;}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second} \PYG{o}{\PYGZgt{}} \PYG{n}{l}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+          \PYG{n}{insert}\PYG{p}{(\PYGZob{}}\PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{first}\PYG{p}{,} \PYG{n}{l}\PYG{p}{\PYGZcb{});}
+          \PYG{k}{if} \PYG{p}{(}\PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second} \PYG{o}{\PYGZgt{}} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{n}{insert}\PYG{p}{(\PYGZob{}}\PYG{n}{r}\PYG{p}{,} \PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second}\PYG{p}{\PYGZcb{});}
+            \PYG{n}{erase}\PYG{p}{(}\PYG{n}{it}\PYG{p}{);}
+            \PYG{k}{return}\PYG{p}{;}
+          \PYG{p}{\PYGZcb{}}
+          \PYG{n}{erase}\PYG{p}{(}\PYG{n}{it}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{auto} \PYG{n}{it} \PYG{o}{=} \PYG{n}{lb}\PYG{p}{(}\PYG{n}{l}\PYG{p}{);}
+    \PYG{k}{auto} \PYG{n}{itr} \PYG{o}{=} \PYG{n}{lb}\PYG{p}{(}\PYG{n}{r}\PYG{p}{);}
+    \PYG{k}{while} \PYG{p}{(}\PYG{n}{it} \PYG{o}{!=} \PYG{n}{itr}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+      \PYG{k}{if} \PYG{p}{(}\PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second} \PYG{o}{\PYGZgt{}} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{insert}\PYG{p}{(\PYGZob{}}\PYG{n}{r}\PYG{p}{,} \PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second}\PYG{p}{\PYGZcb{});}
+        \PYG{n}{it} \PYG{o}{=} \PYG{n}{erase}\PYG{p}{(}\PYG{n}{it}\PYG{p}{);}
+        \PYG{k}{break}\PYG{p}{;}
+      \PYG{p}{\PYGZcb{}}
+      \PYG{n}{it} \PYG{o}{=} \PYG{n}{erase}\PYG{p}{(}\PYG{n}{it}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{bool} \PYG{n}{is\PYGZus{}in}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{l}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{assert}\PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZgt{}=} \PYG{n}{l}\PYG{p}{);}
+    \PYG{k}{auto} \PYG{n}{it} \PYG{o}{=} \PYG{n}{ub}\PYG{p}{(}\PYG{n}{l}\PYG{p}{);}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{it} \PYG{o}{==} \PYG{n}{s}\PYG{p}{.}\PYG{n}{begin}\PYG{p}{())} \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{it}\PYG{p}{;}
+    \PYG{k}{return} \PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{first} \PYG{o}{\PYGZlt{}=} \PYG{n}{l} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{r} \PYG{o}{\PYGZlt{}=} \PYG{n}{it}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{bool} \PYG{n}{is\PYGZus{}in}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{pos}\PYG{p}{)} \PYG{p}{\PYGZob{}} \PYG{k}{return} \PYG{n}{is\PYGZus{}in}\PYG{p}{(}\PYG{n}{pos}\PYG{p}{,} \PYG{n}{pos}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);} \PYG{p}{\PYGZcb{}}
+  \PYG{n}{ll} \PYG{n}{length}\PYG{p}{()} \PYG{p}{\PYGZob{}} \PYG{k}{return} \PYG{n}{len}\PYG{p}{;} \PYG{p}{\PYGZcb{}}
+  \PYG{n}{ll} \PYG{n}{count}\PYG{p}{()} \PYG{p}{\PYGZob{}} \PYG{k}{return} \PYG{n}{s}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();} \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{void} \PYG{n}{out}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{n}{each}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{s}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+      \PYG{n}{cout} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{l+s}{\PYGZdq{}[\PYGZdq{}} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{p}\PYG{p}{.}\PYG{n}{first} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{l+s}{\PYGZdq{}, \PYGZdq{}} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{p}\PYG{p}{.}\PYG{n}{second} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{l+s}{\PYGZdq{})\PYGZdq{}} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{endl}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

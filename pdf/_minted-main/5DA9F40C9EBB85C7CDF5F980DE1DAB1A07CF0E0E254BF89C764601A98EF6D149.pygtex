@@ -1,0 +1,104 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{scc\PYGZus{}dfs}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{v}\PYG{p}{,} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{bool}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{used}\PYG{p}{,} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{vs}\PYG{p}{,} \PYG{k}{const} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZgt{}\PYGZam{}} \PYG{n}{G}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{n}{used}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb}{true}\PYG{p}{;}
+  \PYG{n}{each}\PYG{p}{(}\PYG{n}{to}\PYG{p}{,} \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{o}{!}\PYG{n}{used}\PYG{p}{[}\PYG{n}{to}\PYG{p}{])} \PYG{n}{scc\PYGZus{}dfs}\PYG{p}{(}\PYG{n}{to}\PYG{p}{,} \PYG{n}{used}\PYG{p}{,} \PYG{n}{vs}\PYG{p}{,} \PYG{n}{G}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{vs}\PYG{p}{.}\PYG{n}{pb}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{scc\PYGZus{}rdfs}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{v}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{k}\PYG{p}{,} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{bool}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{used}\PYG{p}{,} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{cmp}\PYG{p}{,} \PYG{k}{const} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZgt{}\PYGZam{}} \PYG{n}{rG}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{n}{used}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb}{true}\PYG{p}{;}
+  \PYG{n}{cmp}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{=} \PYG{n}{k}\PYG{p}{;}
+  \PYG{n}{each}\PYG{p}{(}\PYG{n}{to}\PYG{p}{,} \PYG{n}{rG}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{o}{!}\PYG{n}{used}\PYG{p}{[}\PYG{n}{to}\PYG{p}{])} \PYG{n}{scc\PYGZus{}rdfs}\PYG{p}{(}\PYG{n}{to}\PYG{p}{,} \PYG{n}{k}\PYG{p}{,} \PYG{n}{used}\PYG{p}{,} \PYG{n}{cmp}\PYG{p}{,} \PYG{n}{rG}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{// cmpが返る}
+\PYG{c+c1}{// 同じcmpは強連結成分}
+\PYG{c+c1}{// cmp[i] \PYGZlt{} cmp[j] なら j から i に行けない}
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{scc}\PYG{p}{(}\PYG{k}{const} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZgt{}\PYGZam{}} \PYG{n}{G}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{k}{const} \PYG{n}{ll} \PYG{n}{n} \PYG{o}{=} \PYG{n}{G}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{bool}\PYG{o}{\PYGZgt{}} \PYG{n}{used}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,} \PYG{n+nb}{false}\PYG{p}{);}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{vs}\PYG{p}{;}
+  \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{n}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{o}{!}\PYG{n}{used}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{n}{scc\PYGZus{}dfs}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{used}\PYG{p}{,} \PYG{n}{vs}\PYG{p}{,} \PYG{n}{G}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{used}\PYG{p}{.}\PYG{n}{assign}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,} \PYG{n+nb}{false}\PYG{p}{);}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{rG}\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+  \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{n}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{each}\PYG{p}{(}\PYG{n}{to}\PYG{p}{,} \PYG{n}{G}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+      \PYG{n}{rG}\PYG{p}{[}\PYG{n}{to}\PYG{p}{].}\PYG{n}{pb}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{res}\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+  \PYG{n}{ll} \PYG{n}{k} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+  \PYG{n}{rrep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{vs}\PYG{p}{.}\PYG{n}{size}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{o}{!}\PYG{n}{used}\PYG{p}{[}\PYG{n}{vs}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]])} \PYG{n}{scc\PYGZus{}rdfs}\PYG{p}{(}\PYG{n}{vs}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{n}{k}\PYG{o}{++}\PYG{p}{,} \PYG{n}{used}\PYG{p}{,} \PYG{n}{res}\PYG{p}{,} \PYG{n}{rG}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k}{return} \PYG{n}{res}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{get\PYGZus{}scc\PYGZus{}graph}\PYG{p}{(}\PYG{k}{const} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{cmp}\PYG{p}{,} \PYG{k}{const} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZgt{}\PYGZam{}} \PYG{n}{G}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{res}\PYG{p}{(}\PYG{o}{*}\PYG{n}{max\PYGZus{}element}\PYG{p}{(}\PYG{n}{all}\PYG{p}{(}\PYG{n}{cmp}\PYG{p}{))}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);}
+  \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{G}\PYG{p}{.}\PYG{n}{size}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+    \PYG{n}{each}\PYG{p}{(}\PYG{n}{to}\PYG{p}{,} \PYG{n}{G}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+      \PYG{k}{if} \PYG{p}{(}\PYG{n}{cmp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{!=} \PYG{n}{cmp}\PYG{p}{[}\PYG{n}{to}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+        \PYG{n}{res}\PYG{p}{[}\PYG{n}{cmp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]].}\PYG{n}{pb}\PYG{p}{(}\PYG{n}{cmp}\PYG{p}{[}\PYG{n}{to}\PYG{p}{]);}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{res}\PYG{p}{.}\PYG{n}{size}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{all}\PYG{p}{(}\PYG{n}{res}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]));}
+    \PYG{n}{res}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{erase}\PYG{p}{(}\PYG{n}{unique}\PYG{p}{(}\PYG{n}{all}\PYG{p}{(}\PYG{n}{res}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])),} \PYG{n}{res}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{end}\PYG{p}{());}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k}{return} \PYG{n}{res}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k}{class} \PYG{n+nc}{Sat} \PYG{p}{\PYGZob{}}
+  \PYG{n}{ll} \PYG{n}{n}\PYG{p}{;}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{G}\PYG{p}{;}
+  \PYG{n}{ll} \PYG{n+nf}{node\PYGZus{}id}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{id}\PYG{p}{,} \PYG{k+kt}{bool} \PYG{n}{b}\PYG{p}{)} \PYG{k}{const} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{id} \PYG{o}{*} \PYG{l+m+mi}{2} \PYG{o}{+} \PYG{n}{b}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+\PYG{k}{public}\PYG{o}{:}
+  \PYG{n}{Sat}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{size}\PYG{p}{)} \PYG{o}{:} \PYG{n}{n}\PYG{p}{(}\PYG{n}{size}\PYG{p}{),} \PYG{n}{G}\PYG{p}{(}\PYG{n}{size}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+  \PYG{c+c1}{// (id1, b1) =\PYGZgt{} (id2, b2)}
+  \PYG{k+kt}{void} \PYG{n}{add}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{id1}\PYG{p}{,} \PYG{k+kt}{bool} \PYG{n}{b1}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{id2}\PYG{p}{,} \PYG{k+kt}{bool} \PYG{n}{b2}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{// cout \PYGZlt{}\PYGZlt{} \PYGZdq{}add: \PYGZdq{} \PYGZlt{}\PYGZlt{} id1 \PYGZlt{}\PYGZlt{} \PYGZdq{} \PYGZdq{} \PYGZlt{}\PYGZlt{} b1 \PYGZlt{}\PYGZlt{} \PYGZdq{} \PYGZdq{} \PYGZlt{}\PYGZlt{} id2 \PYGZlt{}\PYGZlt{} \PYGZdq{} \PYGZdq{} \PYGZlt{}\PYGZlt{} b2 \PYGZlt{}\PYGZlt{} endl;}
+    \PYG{n}{G}\PYG{p}{[}\PYG{n}{node\PYGZus{}id}\PYG{p}{(}\PYG{n}{id1}\PYG{p}{,} \PYG{n}{b1}\PYG{p}{)].}\PYG{n}{pb}\PYG{p}{(}\PYG{n}{node\PYGZus{}id}\PYG{p}{(}\PYG{n}{id2}\PYG{p}{,} \PYG{n}{b2}\PYG{p}{));}
+    \PYG{n}{G}\PYG{p}{[}\PYG{n}{node\PYGZus{}id}\PYG{p}{(}\PYG{n}{id2}\PYG{p}{,} \PYG{o}{!}\PYG{n}{b2}\PYG{p}{)].}\PYG{n}{pb}\PYG{p}{(}\PYG{n}{node\PYGZus{}id}\PYG{p}{(}\PYG{n}{id1}\PYG{p}{,} \PYG{o}{!}\PYG{n}{b1}\PYG{p}{));}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{bool} \PYG{n}{check}\PYG{p}{()} \PYG{k}{const} \PYG{p}{\PYGZob{}}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{cmp} \PYG{o}{=} \PYG{n}{scc}\PYG{p}{(}\PYG{n}{G}\PYG{p}{);}
+    \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{n}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+      \PYG{k}{if} \PYG{p}{(}\PYG{n}{cmp}\PYG{p}{[}\PYG{n}{node\PYGZus{}id}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n+nb}{true}\PYG{p}{)]} \PYG{o}{==} \PYG{n}{cmp}\PYG{p}{[}\PYG{n}{node\PYGZus{}id}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n+nb}{false}\PYG{p}{)])} \PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n+nb}{true}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{bool}\PYG{o}{\PYGZgt{}} \PYG{n}{solve}\PYG{p}{()} \PYG{k}{const} \PYG{p}{\PYGZob{}}
+    \PYG{n}{assert}\PYG{p}{(} \PYG{n}{check}\PYG{p}{()} \PYG{p}{);}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{cmp} \PYG{o}{=} \PYG{n}{scc}\PYG{p}{(}\PYG{n}{G}\PYG{p}{);}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{bool}\PYG{o}{\PYGZgt{}} \PYG{n}{used}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,} \PYG{n+nb}{false}\PYG{p}{),} \PYG{n}{res}\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}} \PYG{n}{v}\PYG{p}{;}
+    \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{n}\PYG{p}{)} \PYG{n}{v}\PYG{p}{.}\PYG{n}{eb}\PYG{p}{(}\PYG{n}{cmp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{n}{i}\PYG{p}{);}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{all}\PYG{p}{(}\PYG{n}{v}\PYG{p}{),} \PYG{n}{greater}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}}\PYG{p}{());}
+    \PYG{n}{stack}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{S}\PYG{p}{;}
+    \PYG{n}{each}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{v}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+      \PYG{n}{ll} \PYG{n}{i} \PYG{o}{=} \PYG{n}{p}\PYG{p}{.}\PYG{n}{second}\PYG{p}{;}
+      \PYG{k}{if} \PYG{p}{(}\PYG{n}{used}\PYG{p}{[}\PYG{n}{i}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{])} \PYG{k}{continue}\PYG{p}{;}
+      \PYG{n}{used}\PYG{p}{[}\PYG{n}{i}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb}{true}\PYG{p}{;}
+      \PYG{n}{S}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+      \PYG{k}{while} \PYG{p}{(} \PYG{o}{!}\PYG{n}{S}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{()} \PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{ll} \PYG{n}{v} \PYG{o}{=} \PYG{n}{S}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();} \PYG{n}{S}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+        \PYG{n}{res}\PYG{p}{[}\PYG{n}{v}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{n}{v} \PYG{o}{\PYGZam{}} \PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{each}\PYG{p}{(}\PYG{n}{to}\PYG{p}{,} \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+          \PYG{k}{if} \PYG{p}{(}\PYG{n}{used}\PYG{p}{[}\PYG{n}{to}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{])} \PYG{k}{continue}\PYG{p}{;}
+          \PYG{n}{used}\PYG{p}{[}\PYG{n}{to}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{]} \PYG{o}{=} \PYG{n+nb}{true}\PYG{p}{;}
+          \PYG{n}{S}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{to}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{res}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

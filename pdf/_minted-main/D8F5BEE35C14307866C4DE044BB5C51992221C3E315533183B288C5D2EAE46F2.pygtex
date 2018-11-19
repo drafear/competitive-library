@@ -1,0 +1,76 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{class} \PYG{n+nc}{AhoCorasick} \PYG{p}{\PYGZob{}}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{map}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{char}\PYG{p}{,} \PYG{k+kt}{int}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{G}\PYG{p}{;}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{failure}\PYG{p}{;}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{pattern}\PYG{p}{;}
+  \PYG{k+kt}{int} \PYG{n+nf}{fresh\PYGZus{}node}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{res} \PYG{o}{=} \PYG{n}{G}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}
+    \PYG{n}{G}\PYG{p}{.}\PYG{n}{resize}\PYG{p}{(}\PYG{n}{res}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{n}{pattern}\PYG{p}{.}\PYG{n}{pb}\PYG{p}{(}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}}\PYG{p}{());}
+    \PYG{k}{return} \PYG{n}{res}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{int} \PYG{n+nf}{follow}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{,} \PYG{k+kt}{char} \PYG{n}{c}\PYG{p}{)} \PYG{k}{const} \PYG{p}{\PYGZob{}}
+    \PYG{k}{while} \PYG{p}{(}\PYG{n}{v} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{].}\PYG{n}{count}\PYG{p}{(}\PYG{n}{c}\PYG{p}{)} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+      \PYG{n}{v} \PYG{o}{=} \PYG{n}{failure}\PYG{p}{[}\PYG{n}{v}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{v} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{0} \PYG{o}{?} \PYG{l+m+mi}{0} \PYG{o}{:} \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{].}\PYG{n}{find}\PYG{p}{(}\PYG{n}{c}\PYG{p}{)}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{second}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{void} \PYG{n+nf}{generate\PYGZus{}trie}\PYG{p}{(}\PYG{k}{const} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{patterns}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{patterns}\PYG{p}{.}\PYG{n}{size}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+      \PYG{k+kt}{int} \PYG{n}{v} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+      \PYG{n}{each}\PYG{p}{(}\PYG{n}{c}\PYG{p}{,} \PYG{n}{patterns}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{].}\PYG{n}{count}\PYG{p}{(}\PYG{n}{c}\PYG{p}{)} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+          \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{c}\PYG{p}{]} \PYG{o}{=} \PYG{n}{fresh\PYGZus{}node}\PYG{p}{();}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{v} \PYG{o}{=} \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{c}\PYG{p}{];}
+      \PYG{p}{\PYGZcb{}}
+      \PYG{n}{pattern}\PYG{p}{[}\PYG{n}{v}\PYG{p}{].}\PYG{n}{pb}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{G}\PYG{p}{.}\PYG{n}{reserve}\PYG{p}{(}\PYG{n}{size}\PYG{p}{());}
+    \PYG{n}{pattern}\PYG{p}{.}\PYG{n}{reserve}\PYG{p}{(}\PYG{n}{size}\PYG{p}{());}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{void} \PYG{n+nf}{add\PYGZus{}failure\PYGZus{}edge}\PYG{p}{()} \PYG{p}{\PYGZob{}}
+    \PYG{n}{queue}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{Q}\PYG{p}{;} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{n}{failure}\PYG{p}{.}\PYG{n}{reserve}\PYG{p}{(}\PYG{n}{size}\PYG{p}{());}
+    \PYG{n}{failure}\PYG{p}{.}\PYG{n}{assign}\PYG{p}{(}\PYG{n}{size}\PYG{p}{(),} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{k}{while} \PYG{p}{(} \PYG{o}{!}\PYG{n}{Q}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{()} \PYG{p}{)} \PYG{p}{\PYGZob{}}
+      \PYG{k+kt}{int} \PYG{n}{v} \PYG{o}{=} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{front}\PYG{p}{();} \PYG{n}{Q}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+      \PYG{n}{each}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{G}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+        \PYG{k+kt}{char} \PYG{n}{c}\PYG{p}{;} \PYG{k+kt}{int} \PYG{n}{to}\PYG{p}{;} \PYG{n}{tie}\PYG{p}{(}\PYG{n}{c}\PYG{p}{,} \PYG{n}{to}\PYG{p}{)} \PYG{o}{=} \PYG{n}{p}\PYG{p}{;}
+        \PYG{n}{Q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{p}\PYG{p}{.}\PYG{n}{second}\PYG{p}{);}
+        \PYG{n}{failure}\PYG{p}{[}\PYG{n}{to}\PYG{p}{]} \PYG{o}{=} \PYG{n}{follow}\PYG{p}{(}\PYG{n}{failure}\PYG{p}{[}\PYG{n}{v}\PYG{p}{],} \PYG{n}{c}\PYG{p}{);}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{}}
+\PYG{k}{public}\PYG{o}{:}
+  \PYG{n}{AhoCorasick}\PYG{p}{(}\PYG{k}{const} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{string}\PYG{o}{\PYGZgt{}\PYGZam{}} \PYG{n}{patterns}\PYG{p}{)} \PYG{o}{:} \PYG{n}{G}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{),} \PYG{n}{pattern}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{generate\PYGZus{}trie}\PYG{p}{(}\PYG{n}{patterns}\PYG{p}{);}
+    \PYG{n}{add\PYGZus{}failure\PYGZus{}edge}\PYG{p}{();}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{size\PYGZus{}t} \PYG{n}{size}\PYG{p}{()} \PYG{k}{const} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{G}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{p}{,} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{find}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{,} \PYG{k+kt}{char} \PYG{n}{c}\PYG{p}{)} \PYG{k}{const} \PYG{p}{\PYGZob{}}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{res}\PYG{p}{;}
+    \PYG{n}{v} \PYG{o}{=} \PYG{n}{follow}\PYG{p}{(}\PYG{n}{v}\PYG{p}{,} \PYG{n}{c}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{now} \PYG{o}{=} \PYG{n}{v}\PYG{p}{;}
+    \PYG{k}{while} \PYG{p}{(}\PYG{n}{now} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+      \PYG{n}{copy}\PYG{p}{(}\PYG{n}{all}\PYG{p}{(}\PYG{n}{pattern}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]),} \PYG{n}{back\PYGZus{}inserter}\PYG{p}{(}\PYG{n}{res}\PYG{p}{));}
+      \PYG{n}{now} \PYG{o}{=} \PYG{n}{failure}\PYG{p}{[}\PYG{n}{now}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{p}{\PYGZob{}}\PYG{n}{v}\PYG{p}{,} \PYG{n}{res}\PYG{p}{\PYGZcb{};}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{p}{,} \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{find}\PYG{p}{(}\PYG{k}{const} \PYG{n}{string}\PYG{o}{\PYGZam{}} \PYG{n}{s}\PYG{p}{)} \PYG{k}{const} \PYG{p}{\PYGZob{}}
+    \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{P}\PYG{o}{\PYGZgt{}} \PYG{n}{res}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{v} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{s}\PYG{p}{.}\PYG{n}{size}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+      \PYG{k}{auto} \PYG{n}{result} \PYG{o}{=} \PYG{n}{find}\PYG{p}{(}\PYG{n}{v}\PYG{p}{,} \PYG{n}{s}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+      \PYG{n}{v} \PYG{o}{=} \PYG{n}{result}\PYG{p}{.}\PYG{n}{first}\PYG{p}{;}
+      \PYG{n}{each}\PYG{p}{(}\PYG{n}{pid}\PYG{p}{,} \PYG{n}{result}\PYG{p}{.}\PYG{n}{second}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{n}{res}\PYG{p}{.}\PYG{n}{pb}\PYG{p}{(\PYGZob{}}\PYG{n}{i}\PYG{p}{,} \PYG{n}{pid}\PYG{p}{\PYGZcb{});}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{p}{\PYGZob{}}\PYG{n}{v}\PYG{p}{,} \PYG{n}{res}\PYG{p}{\PYGZcb{};}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

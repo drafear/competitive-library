@@ -1,0 +1,38 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// SegmentTree\PYGZlt{}int\PYGZgt{} seg(n, 0x7FFFFFFF, [](int a, int b)\PYGZob{}return min(a, b);\PYGZcb{});}
+\PYG{k}{template} \PYG{o}{\PYGZlt{}}\PYG{k}{typename} \PYG{n}{T}\PYG{o}{\PYGZgt{}}
+\PYG{k}{class} \PYG{n+nc}{SegmentTree} \PYG{p}{\PYGZob{}}
+  \PYG{k}{using} \PYG{n}{func\PYGZus{}t} \PYG{o}{=} \PYG{n}{function}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{p}{(}\PYG{n}{T}\PYG{p}{,} \PYG{n}{T}\PYG{p}{)}\PYG{o}{\PYGZgt{}}\PYG{p}{;}
+  \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{;}
+  \PYG{k}{const} \PYG{n}{T} \PYG{n}{id}\PYG{p}{;}
+  \PYG{n}{func\PYGZus{}t} \PYG{n}{merge}\PYG{p}{;}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}} \PYG{n}{data}\PYG{p}{;}
+  \PYG{n}{T} \PYG{n+nf}{sub}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{node}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{lb}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{ub}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{ub} \PYG{o}{\PYGZlt{}=} \PYG{n}{l} \PYG{o}{||} \PYG{n}{r} \PYG{o}{\PYGZlt{}=} \PYG{n}{lb}\PYG{p}{)} \PYG{k}{return} \PYG{n}{id}\PYG{p}{;}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{l} \PYG{o}{\PYGZlt{}=} \PYG{n}{lb} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{ub} \PYG{o}{\PYGZlt{}=} \PYG{n}{r}\PYG{p}{)} \PYG{k}{return} \PYG{n}{data}\PYG{p}{[}\PYG{n}{node}\PYG{p}{];}
+    \PYG{n}{T} \PYG{n}{vl} \PYG{o}{=} \PYG{n}{sub}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{n}{node} \PYG{o}{*} \PYG{l+m+mi}{2} \PYG{o}{+} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{lb}\PYG{p}{,} \PYG{p}{(}\PYG{n}{lb} \PYG{o}{+} \PYG{n}{ub}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mi}{2}\PYG{p}{);}
+    \PYG{n}{T} \PYG{n}{vr} \PYG{o}{=} \PYG{n}{sub}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{n}{node} \PYG{o}{*} \PYG{l+m+mi}{2} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{p}{(}\PYG{n}{lb} \PYG{o}{+} \PYG{n}{ub}\PYG{p}{)} \PYG{o}{/} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{ub}\PYG{p}{);}
+    \PYG{k}{return} \PYG{n}{merge}\PYG{p}{(}\PYG{n}{vl}\PYG{p}{,} \PYG{n}{vr}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{int} \PYG{n+nf}{size}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{res}\PYG{p}{;}
+    \PYG{k}{for} \PYG{p}{(}\PYG{n}{res} \PYG{o}{=} \PYG{l+m+mi}{1}\PYG{p}{;} \PYG{n}{res} \PYG{o}{\PYGZlt{}} \PYG{n}{n}\PYG{p}{;} \PYG{n}{res} \PYG{o}{\PYGZlt{}\PYGZlt{}=} \PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{k}{return} \PYG{n}{res}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+\PYG{k}{public}\PYG{o}{:}
+  \PYG{n}{SegmentTree}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,} \PYG{n}{T} \PYG{n}{id}\PYG{p}{,} \PYG{n}{func\PYGZus{}t} \PYG{n}{merge}\PYG{p}{)} \PYG{o}{:}
+    \PYG{n}{n}\PYG{p}{(}\PYG{n}{size}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)),} \PYG{n}{id}\PYG{p}{(}\PYG{n}{id}\PYG{p}{),} \PYG{n}{merge}\PYG{p}{(}\PYG{n}{merge}\PYG{p}{),} \PYG{n}{data}\PYG{p}{(}\PYG{n}{size}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)} \PYG{o}{*} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{id}\PYG{p}{)} \PYG{p}{\PYGZob{}\PYGZcb{}}
+  \PYG{k+kt}{void} \PYG{n}{update}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{p}\PYG{p}{,} \PYG{n}{T} \PYG{n}{val}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{assert} \PYG{p}{(}\PYG{l+m+mi}{0} \PYG{o}{\PYGZlt{}=} \PYG{n}{p} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{p} \PYG{o}{\PYGZlt{}} \PYG{n}{n}\PYG{p}{);}
+    \PYG{n}{p} \PYG{o}{+=} \PYG{n}{n}\PYG{p}{;}
+    \PYG{n}{data}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]} \PYG{o}{=} \PYG{n}{val}\PYG{p}{;}
+    \PYG{k}{while} \PYG{p}{(}\PYG{n}{p} \PYG{o}{/=} \PYG{l+m+mi}{2}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+      \PYG{k+kt}{int} \PYG{n}{l} \PYG{o}{=} \PYG{n}{p} \PYG{o}{*} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{r} \PYG{o}{=} \PYG{n}{p} \PYG{o}{*} \PYG{l+m+mi}{2} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{;}
+      \PYG{n}{data}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]} \PYG{o}{=} \PYG{n}{merge}\PYG{p}{(}\PYG{n}{data}\PYG{p}{[}\PYG{n}{l}\PYG{p}{],} \PYG{n}{data}\PYG{p}{[}\PYG{n}{r}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{T} \PYG{n}{find}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{sub}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{n}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}

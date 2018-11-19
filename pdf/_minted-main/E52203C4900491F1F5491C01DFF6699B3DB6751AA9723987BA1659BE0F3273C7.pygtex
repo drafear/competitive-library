@@ -1,0 +1,41 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// solve \PYGZob{}x\PYGZus{}i \PYGZhy{} x\PYGZus{}j = c | (i, j, c) in E\PYGZcb{}}
+\PYG{k}{class} \PYG{n+nc}{Potential} \PYG{p}{\PYGZob{}}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{par}\PYG{p}{,} \PYG{n}{h}\PYG{p}{;}
+\PYG{k}{public}\PYG{o}{:}
+  \PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{ll}\PYG{o}{\PYGZgt{}} \PYG{n}{pot}\PYG{p}{;}
+  \PYG{n}{Potential}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{size}\PYG{p}{)} \PYG{o}{:} \PYG{n}{par}\PYG{p}{(}\PYG{n}{size}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{),} \PYG{n}{h}\PYG{p}{(}\PYG{n}{size}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{),} \PYG{n}{pot}\PYG{p}{(}\PYG{n}{size}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{rep}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,} \PYG{n}{size}\PYG{p}{)} \PYG{n}{par}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{i}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{c+c1}{// u \PYGZhy{} v = cost?}
+  \PYG{k+kt}{bool} \PYG{n}{check}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{u}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{v}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{cost}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{pot}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{pot}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{==} \PYG{n}{cost}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{c+c1}{// add: u \PYGZhy{} v = cost}
+  \PYG{k+kt}{void} \PYG{n}{add}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{u0}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{v0}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{cost}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{ll} \PYG{n}{u} \PYG{o}{=} \PYG{n}{root}\PYG{p}{(}\PYG{n}{u0}\PYG{p}{),} \PYG{n}{v} \PYG{o}{=} \PYG{n}{root}\PYG{p}{(}\PYG{n}{v0}\PYG{p}{);}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{u} \PYG{o}{==} \PYG{n}{v}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+      \PYG{k}{if} \PYG{p}{(}\PYG{o}{!}\PYG{n}{check}\PYG{p}{(}\PYG{n}{u0}\PYG{p}{,} \PYG{n}{v0}\PYG{p}{,} \PYG{n}{cost}\PYG{p}{))} \PYG{k}{throw} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+      \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{\PYGZgt{}} \PYG{n}{h}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{p}{\PYGZob{}}
+      \PYG{n}{pot}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{=} \PYG{o}{\PYGZhy{}}\PYG{n}{cost} \PYG{o}{+} \PYG{n}{pot}\PYG{p}{[}\PYG{n}{u0}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{pot}\PYG{p}{[}\PYG{n}{v0}\PYG{p}{];}
+      \PYG{n}{par}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{=} \PYG{n}{u}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{else} \PYG{p}{\PYGZob{}}
+      \PYG{n}{pot}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{=} \PYG{n}{cost} \PYG{o}{+} \PYG{n}{pot}\PYG{p}{[}\PYG{n}{v0}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{pot}\PYG{p}{[}\PYG{n}{u0}\PYG{p}{];}
+      \PYG{n}{par}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{=} \PYG{n}{v}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{==} \PYG{n}{h}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])} \PYG{o}{++}\PYG{n}{h}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{bool} \PYG{n}{isUnited}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{u}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{v}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{root}\PYG{p}{(}\PYG{n}{u}\PYG{p}{)} \PYG{o}{==} \PYG{n}{root}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{n}{ll} \PYG{n}{root}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{v}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{par}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{==} \PYG{n}{v}\PYG{p}{)} \PYG{k}{return} \PYG{n}{v}\PYG{p}{;}
+    \PYG{n}{ll} \PYG{n}{r} \PYG{o}{=} \PYG{n}{root}\PYG{p}{(}\PYG{n}{par}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]);}
+    \PYG{n}{pot}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{pot}\PYG{p}{[}\PYG{n}{par}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]];}
+    \PYG{k}{return} \PYG{n}{par}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{=} \PYG{n}{r}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\end{Verbatim}
