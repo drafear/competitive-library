@@ -49,8 +49,8 @@ ostream& operator<<(ostream& os, const vector< vector<T> >& vec) {
     return os;
 }
 
-#include "../z-algorithm.cpp"
-#include "../unionfind.cpp"
+#include "../lib/z-algorithm.cpp"
+#include "../lib/unionfind.cpp"
 
 int main() {
   ios::sync_with_stdio(false);

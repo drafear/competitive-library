@@ -21,7 +21,7 @@ def _get_csrf_token(url, cookie_jar):
     csrf_token = html.unescape(mc.group(1))
   return csrf_token
 
-def login_and_save_cookie(user_id, password, cookie_file_path=settings.atcoder_cookie_file_path):
+def login(user_id, password):
   url = 'https://beta.atcoder.jp/login'
   cj = cookiejar.LWPCookieJar()
   csrf_token = _get_csrf_token(url, cj)
@@ -35,7 +35,7 @@ def login_and_save_cookie(user_id, password, cookie_file_path=settings.atcoder_c
   }
   res = False
   with opener.open(url, data=urlencode(param).encode('ascii')) as fs:
-    cj.save(cookie_file_path)
+    cj.save(settings.path_to_cookie)
     html_str = re.compile(r'([\r\n\t]|  )').sub('', fs.read().decode('utf-8'))
     if html_str.find('/login') >= 0:
       root = PyQuery(html_str)
@@ -47,7 +47,7 @@ def _load_cookiejar():
   cj = cookiejar.LWPCookieJar()
   if not os.path.exists(settings.atcoder_cookie_file_path):
     raise Exception('run `./login atcoder` first')
-  cj.load(settings.atcoder_cookie_file_path)
+  cj.load(settings.path_to_cookie)
   return cj
 
 def submit(source_code, contest_name, task_name, language_id=Language.cpp):
@@ -64,7 +64,7 @@ def submit(source_code, contest_name, task_name, language_id=Language.cpp):
     "User-Agent": settings.user_agent,
   }
   with opener.open(url, data=urlencode(param).encode('ascii')) as fs:
-    cj.save(settings.atcoder_cookie_file_path)
+    cj.save(settings.path_to_cookie)
 
 # def get_my_submissions(contest_name):
 #   cj = _load_cookiejar()

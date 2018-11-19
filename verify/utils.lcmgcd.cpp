@@ -1,7 +1,6 @@
 /*==start==
-judge: atcoder
-contest_name: abc014
-task_name: abc014_4
+judge: aoj
+problem_id: 0005
 ==end==*/
 #include <bits/stdc++.h>
 
@@ -49,20 +48,11 @@ ostream& operator<<(ostream& os, const vector< vector<T> >& vec) {
     return os;
 }
 
-#include "../lib/lca.cpp"
+#include "../lib/utils.cpp"
 
 int main() {
-  ios::sync_with_stdio(false);
-  cin.tie(0);
-  ll n; cin >> n;
-  LCA<Sum> g(n, 0);
-  rep(i, n-1) {
-    ll a, b; cin >> a >> b; --a, --b;
-    g.add(a, b, 1);
-  }
-  ll Q; cin >> Q;
-  rep(q, Q) {
-    ll a, b; cin >> a >> b; --a, --b;
-    cout << g.lca(a, b).second + 1 << endl;
+  ll a, b;
+  while (cin >> a >> b) {
+    cout << gcd(a, b) << " " << lcm(a, b) << endl;
   }
 }

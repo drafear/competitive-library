@@ -4,7 +4,7 @@ import argparse
 import sys
 import traceback
 import getpass
-from modules import atcoder
+from modules import atcoder, aoj
 
 def parser():
   parser = argparse.ArgumentParser(description="Login to an online judge' and test it")
@@ -20,13 +20,12 @@ def get_password():
 def login_to_atcoder():
   user_id = get_user_id()
   password = get_password()
-  atcoder.login_and_save_cookie(user_id=user_id, password=password)
+  atcoder.login(user_id=user_id, password=password)
 
 def login_to_aoj():
   user_id = get_user_id()
   password = get_password()
-  sys.stderr.write('未実装です')
-  exit(1)
+  aoj.login(user_id=user_id, password=password)
 
 def main():
   args = parser().parse_args()

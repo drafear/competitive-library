@@ -1,17 +1,59 @@
 #!/usr/bin/env python3
 
+import getpass
 import argparse
 import os
 import sys
 import subprocess
 import re
 import tempfile
-import webbrowser
 import traceback
-from modules import atcoder
+from modules import atcoder, aoj, judge_result
+
+def input_user_id():
+  return input('User Id: ')
+
+def input_password():
+  return getpass.getpass()
+
+class Atcoder:
+  def __init__(self, config):
+    assert 'contest_name' in config, 'missing config parameter: `contest_name`\nexample: `contest_name: arc055`'
+    assert 'task_name' in config, 'missing config parameter: `task_name`\nexample: `task_name: arc055_c`'
+    self.contest_name = config['contest_name']
+    self.task_name = config['task_name']
+
+  def submit(self, source):
+    atcoder.submit(
+      source_code=source,
+      contest_name=self.contest_name,
+      task_name=self.task_name,
+    )
+    return judge_result.Browser('https://beta.atcoder.jp/contests/{0}/submissions/me'.format(contest_name))
+
+class Aoj:
+  def __init__(self, config):
+    assert 'problem_id' in config, 'missing config parameter: `problem_id`\nexample: `problem_id: 0005`'
+    self.problem_id = config['problem_id']
+
+  def submit(self, source):
+    try:
+      if not aoj.is_login():
+        print('AOJ Session was expired. So you need to sign in again.')
+        user_id = input_user_id()
+        password = input_password()
+        aoj.login(user_id=user_id, password=password)
+        print('Logged in successfully!!')
+      return aoj.submit(
+        source_code=source,
+        problem_id=self.problem_id,
+      )
+    except Exception as e:
+      sys.stderr.write(str(e) + '\n')
+      exit(1)
 
 def parser():
-  parser = argparse.ArgumentParser(description="Compile 'test/<test-name>.<suffix>.cpp' and test it")
+  parser = argparse.ArgumentParser(description="Compile 'verify/<test-name>.<suffix>.cpp' and test it")
   parser.add_argument('-o', '--output-source', dest='output', type=str, help='only merge source and output it to this file')
   parser.add_argument('-l', '--local', dest='local', help='compile and run locally', action='store_true')
   parser.add_argument('-i', '--stdin', dest='stdin', help='force change input to stdin', action='store_true')
@@ -120,13 +162,10 @@ class Program:
   def submit(self):
     assert 'judge' in self.config, 'write `judge: [atcoder/aoj]` between `==start==` and `==end==` line in the program'
     if self.config['judge'] == 'atcoder':
-      assert 'contest_name' in self.config, 'missing config parameter: `contest_name`\nexample: `contest_name: arc055`'
-      assert 'task_name' in self.config, 'missing config parameter: `task_name`\nexample: `task_name: arc055_c`'
-      atcoder.submit(
-        source_code=self.source,
-        contest_name=self.config['contest_name'],
-        task_name=self.config['task_name'],
-      )
+      judge = Atcoder
+    elif self.config['judge'] == 'aoj':
+      judge = Aoj
+    return judge(self.config).submit(self.source)
 
   def __enter__(self):
     self.tempfile.__enter__()
@@ -164,13 +203,11 @@ def test_local(args):
 
 def test_online(args):
   test_name, program_name = get_test_and_program_name(args)
-  write_log(test_name, args.suffix, 'Loading...')
+  # write_log(test_name, args.suffix, 'Loading...')
   with Program.load(program_name) as program:
-    write_log(test_name, args.suffix, 'Submitting...')
-    program.submit()
-    write_log(test_name, args.suffix, 'Submitted!!')
-    contest_name = program.config['contest_name']
-  webbrowser.open('https://beta.atcoder.jp/contests/{0}/submissions/me'.format(contest_name))
+    # write_log(test_name, args.suffix, 'Judging...')
+    result = program.submit()
+    result.output()
 
 def merge_only(args):
   _, program_name = get_test_and_program_name(args)

@@ -153,6 +153,28 @@ public:
   void erase(const T& val) { erase_(t.nth(val)); }
   Int count(const T& x) const { return count_(t.nth(x), t.nth(x)+1); }
   Int count(const T& lb, const T& ub) const { return count_(t.nth(lb), t.nth(ub)); }
+  T zero_nth(Int n) const {
+    const Node* node = root;
+    Int lb(0), ub = sz;
+    Int rest = (ub - lb) - node->sum;
+    if (n >= rest) return t.nth(sz + n - rest);
+    for (int i = 0; i < depth; ++i) {
+      Int mid = (lb + ub) / 2;
+      Int lsum = (mid - lb) - (node->lch == nullptr ? 0 : node->lch->sum);
+      if (n >= lsum) {
+        n -= lsum;
+        node = node->rch;
+        lb = move(mid);
+      }
+      else {
+        node = node->lch;
+        ub = move(mid);
+      }
+      if (node == nullptr) return t.nth(lb + n);
+    }
+    assert(n == Int(0));
+    return t.nth(lb);
+  }
   void clear() {
     sz = 0;
     root = Node();
@@ -161,16 +183,39 @@ public:
 };
 class Integer {
 public:
-  using type = int;
+  using type = long long;
   using counting_type = type;
   type nth(const counting_type& x) const { return x; }
 };
-class Pair {
+class PairSet {
   const int n, m;
+  long long f(int n) const {
+    return (long long)n * (n+1) / 2;
+  }
 public:
   using type = pair<int,int>;
   using counting_type = long long;
-  Pair(int n, int m) : n(n), m(m) {}
-  counting_type nth(const type& x) const { return x.first * m + x.second; }
-  type nth(const counting_type& x) const { return type(x / m, x % m); }
+  PairSet(int n, int m) : n(n), m(m) {}
+  counting_type nth(const type& x) const { return f(x.first-1) + x.second; }
+  type nth(const counting_type& x) const {
+    int lb = 0, ub = (int)1e9;
+    for (int t = 0; t < 30; ++t) {
+      int mid = (lb + ub) / 2;
+      if (f(mid) <= x) lb = mid;
+      else ub = mid;
+    }
+    return type(lb+1, x - f(lb));
+  }
 };
+// [0, n) からランダムに m 個選ぶ
+vector<ll> select(ll n, ll m) {
+  assert(n >= m);
+  Set<Integer> s;
+  vector<ll> res(m);
+  rep(i, m) {
+    ll val = s.zero_nth(rnd.next(n-i));
+    res[i] = val;
+    s.insert(val);
+  }
+  return res;
+}

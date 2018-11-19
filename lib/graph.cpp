@@ -1,11 +1,11 @@
-template<typename T>
+template<typename Weight>
 class Graph {
   bool is_directed;
   ll next_eid;
   vector<ll> G;
   struct Edge {
     ll id, from, to;
-    T cost;
+    Weight cost;
   };
 public:
   Graph() : next_eid(0), is_directed(true) {}

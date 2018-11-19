@@ -49,7 +49,7 @@ ostream& operator<<(ostream& os, const vector< vector<T> >& vec) {
     return os;
 }
 
-#include "../myset.cpp"
+#include "../lib/myset.cpp"
 
 int main() {
   ios::sync_with_stdio(false);
