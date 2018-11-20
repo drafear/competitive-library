@@ -9,13 +9,8 @@ map<T, ll> get_zaatu(vector<T> vals) {
   return res;
 }
 template<typename T>
-void zaatu(vector<T>& vals) {
+vector<T> zaatu(vector<T> vals) {
   map<T, ll> z = get_zaatu(vals);
   each(x, vals) x = z[x];
+  return vals;
 }
-// template<typename T1, T2>
-// void zaatu(vector<T1>& vals, const function<T2(T1)>& f) {
-//   vector<T&> v;
-//   each(x, vals) v.pb(f(x));
-//   zaatu(v);
-// }

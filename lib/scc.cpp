@@ -1,4 +1,3 @@
-
 void scc_dfs(ll v, vector<bool>& used, vector<ll>& vs, const vector<vector<ll>>& G) {
   used[v] = true;
   each(to, G[v]) {

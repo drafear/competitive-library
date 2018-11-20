@@ -2,11 +2,11 @@ template<typename Weight>
 class Graph {
   bool is_directed;
   ll next_eid;
-  vector<ll> G;
   struct Edge {
     ll id, from, to;
     Weight cost;
   };
+  vector<vector<Edge>> G;
 public:
   Graph() : next_eid(0), is_directed(true) {}
   Graph(size_t size, bool is_directed=true) : G(size), next_eid(0), is_directed(is_directed) {}

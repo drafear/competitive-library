@@ -100,7 +100,7 @@ class Compiler:
 
   @staticmethod
   def get_gcc_compiler():
-    return Compiler("g++ -o [dest] -O2 --std=c++14 [src]")
+    return Compiler("g++ -o [dest] -O2 -fconstexpr-loop-limit=5000000 --std=c++14 [src]")
   @staticmethod
   def selectFromFname(ext):
     if ext == '.cpp':
