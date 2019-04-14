@@ -43,9 +43,10 @@ vector<ll> select(ll n, ll m) {
 }
 
 // select m elements from v
-vector<ll> select(const vector<ll>& v, const ll m) {
+template<class T>
+vector<T> select(const vector<T>& v, const ll m) {
   vector<ll> sel = select(v.size(), m);
-  vector<ll> res(m);
+  vector<T> res(m);
   rep(i, m) res[i] = v[sel[i]];
   sort(all(res));
   return res;
