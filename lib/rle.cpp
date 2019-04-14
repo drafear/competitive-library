@@ -1,14 +1,14 @@
 // ランレングス圧縮
-vector<pair<char, int>> rle(string s) {
-  char prev = '\0';
-  int cnt = 0;
+vector<pair<char, int>> rle(const string& s) {
+  char prv = '\0';
+  ll cnt = 0;
   vector<pair<char, int>> res;
-  REP(i, s.size()+1) {
-    if (i == s.size() || s[i] != prev) {
-      if (prev != '\0') {
-        res.pb({prev, cnt});
+  rep(i, s.size()+1) {
+    if (i == s.size() || s[i] != prv) {
+      if (prv != '\0') {
+        res.eb(prv, cnt);
       }
-      prev = s[i];
+      prv = s[i];
       cnt = 1;
     }
     else {

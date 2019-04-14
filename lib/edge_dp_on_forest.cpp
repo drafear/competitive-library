@@ -73,6 +73,7 @@ public:
     G[v].pb({u, ll(G[u].size())-1});
     uf.unite(u, v);
   }
+  // 各有向辺の値 G[v][i].value を計算する
   void dp() {
     vector<bool> used(n, false);
     rep(i, n) {

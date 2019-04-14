@@ -120,3 +120,28 @@ struct Node {
     return res;
   }
 };
+
+// struct MulSum {
+//   using value_type = ll;
+//   using update_type = P;
+//   struct Monoid {
+//     static value_type id() { return 0; }
+//     static value_type op(const value_type& l, const value_type& r) {
+//       return add(l, r);
+//     }
+//   };
+//   struct Update {
+//     static update_type op(const update_type& update_new, const update_type& update_old) {
+//       if (update_new.first == 0) {
+//         return update_new;
+//       }
+//       return P(update_old.first, mul(update_old.second, update_new.second));
+//     }
+//   };
+//   static value_type evaluate(const update_type& update, const value_type& value) {
+//     if (update.first == 0) {
+//       return update.second;
+//     }
+//     return mul(value, update.second);
+//   }
+// };
