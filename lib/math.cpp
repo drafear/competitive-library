@@ -9,10 +9,10 @@ ll inv(ll n); ll power(ll x, ll n) { if (n < 0) return inv(power(x, -n)); ll res
 ll inv(ll n) { return power(n, mod-2); }
 ll divi(ll a, ll b) { return mul(a, inv(b)); }
 ll divi(initializer_list<ll> t) { auto it = t.begin(); ll res = *(it++); while (it != t.end()) res = divi(res, *(it++)); return res; }
-// template<int n> struct Fact { ll fact[n+1]; public: constexpr Fact() : fact() { fact[0] = 1; rep(i, 1, n+1) fact[i] = fact[i-1] * i % mod; } ll operator[](size_t idx) const { return fact[idx]; } };
-// const auto fact = Fact<int(300000)>();
-// ll comb(ll n, ll r) { if (r < 0) return 0; if (r > n) return 0; return divi(fact[n], mul(fact[r], fact[n-r])); }
-// ll perm(ll n, ll r) { if (r < 0) return 0; if (r > n) return 0; return divi(fact[n], fact[n-r]); }
+vector<ll> fact, rfact;
+void init_fact(ll n) { fact.resize(n+1); fact[0] = 1; rep(i, n) fact[i+1] = mul(fact[i], i+1); rfact.resize(n+1); rfact[n] = inv(fact[n]); rrep(i, n) rfact[i] = mul(rfact[i], i+1); }
+ll comb(ll n, ll r) { if (r < 0) return 0; if (r > n) return 0; return divi(fact[n], mul(fact[r], fact[n-r])); }
+ll perm(ll n, ll r) { if (r < 0) return 0; if (r > n) return 0; return divi(fact[n], fact[n-r]); }
 
 using Row = vector<ll>;
 using Matrix = vector<Row>;
