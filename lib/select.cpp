@@ -1,4 +1,4 @@
-// select S ⊆ {1, 2, ..., n} and |S| = m
+// select S ⊆ {0, 1, ..., n-1} and |S| = m
 vector<ll> select(ll n, ll m) {
   assert(m <= n);
   if (m * 50 <= n) {
